@@ -1,0 +1,1206 @@
+Directory structure:
+└── examples/
+    ├── README.md
+    ├── rust-sdk/
+    │   └── whirlpool_repositioning_bot/
+    │       ├── README.md
+    │       ├── Cargo.toml
+    │       ├── CHANGELOG.md
+    │       ├── package.json
+    │       ├── .env.template
+    │       └── src/
+    │           ├── cli.rs
+    │           ├── main.rs
+    │           ├── position_manager.rs
+    │           ├── utils.rs
+    │           └── wallet.rs
+    └── ts-sdk/
+        └── next/
+            ├── README.md
+            ├── CHANGELOG.md
+            ├── next-env.d.ts
+            ├── next.config.js
+            ├── package.json
+            ├── tsconfig.json
+            └── app/
+                ├── layout.tsx
+                └── page.tsx
+
+================================================
+FILE: documentation/examples/README.md
+================================================
+# Whirlpools SDK Examples
+
+This directory contains example projects showcasing how to use the Whirlpools SDK suite in different environments. Each project demonstrates specific functionalities, providing a starting point for developers.
+
+## Building the Examples
+To build the examples, run the following commands from the root of the monorepo:
+
+```bash
+yarn install
+yarn build
+```
+
+### General Note on Dependencies
+All examples in this directory use local versions of the Orca SDK dependencies from this monorepo. If you plan to move an example project outside of the monorepo, you must update the dependencies to ensure compatibility.
+
+## Available Examples
+### Rust
+#### 1. Whirlpool Repositioning Bot
+- Path: examples/rust-sdk/whirlpools-repositioning-bot
+- Description: A CLI tool to automatically reposition positions based on configurable thresholds.
+- Highlights:
+  - Utilizes the Whirlpools Rust SDKs.
+  - Dynamically fetches on-chain data to manage LP positions.
+
+### Typescript
+#### 2. Next.js Integration
+- Path: examples/ts-sdk/whirlpools-next
+- Description: Demonstrates how to integrate the Whirlpools TS SDK `@orca-so/whirlpools` with a Next.js application.
+- Highlights:
+  - Configures WebAssembly (`asyncWebAssembly`) support in Next.js.
+  - Provides a working setup to query and interact with Orca's whirlpools.
+
+
+================================================
+FILE: documentation/examples/rust-sdk/whirlpool_repositioning_bot/README.md
+================================================
+# Whirlpool Repositioning Bot
+
+A Rust-based CLI bot for interacting with the Orca Whirlpools program on Solana. This bot monitors and rebalances a liquidity position by closing and reopening positions when price deviations exceed a user-defined threshold.
+
+> NOTE: this example works with SPL tokens only. If you want to use the repositioning bot on pools where tokens are paired with SOL, you should ensure that you have wSOL (`So11111111111111111111111111111111111111112`) available in your wallet. Check out [this guide](https://solana.com/developers/cookbook/tokens/manage-wrapped-sol) on how to use wSOL.
+
+---
+
+## Features
+
+- **Automated Position Monitoring**: Monitors price deviation of a liquidity position on Orca Whirlpool by calculating the center of the position's price range and comparing it to the current pool price. If the deviation exceeds the specified threshold (in percentage), the bot initiates rebalancing.
+- **Automated Rebalancing**: Closes and reopens liquidity positions by centering the new position around the current pool price, maintaining the same width (distance between the lower and upper price bounds) as the initial position.
+- **Customizable Priority Fees**: Integrates compute budget priority fees to enhance transaction speed and landing, with options ranging from `none` to `turbo` for different levels of prioritization.
+
+---
+
+## Prerequisites
+
+1. **Solana Wallet**:
+
+- Place a `wallet.json` file in the working directory with the keypair that owns the positions.
+- Ensure the wallet has sufficient funds for transactions.
+
+2. **Existing Position**:
+
+- You must have an active position on Orca Whirlpools. You can open a position using our SDKs or through our UI at https://www.orca.so/pools.
+
+3. **Rust**:
+
+- Install Rust using [rustup](https://rustup.rs/).
+
+---
+
+## Installation
+
+There are two ways of building and using this example.
+
+### 1. Build Whirlpools repo
+
+First, clone the repository:
+
+```bash
+git clone https://github.com/orca-so/whirlpools.git
+```
+
+Then, build the repository from the root of the repository:
+
+```bash
+yarn build
+```
+
+> Note: if you experience any issues during the build process, consult the [README](../../../README.md) at the root of the repository.
+
+### 2. Build the example project only:
+
+First, clone the repo and `cd` into the directory of this project.
+
+```bash
+git clone https://github.com/orca-so/whirlpools.git
+cd examples/rust-sdk/whirlpool_repositioning_bot
+```
+
+Then, update `Cargo.toml`. This project uses the local version of the dependencies. If you want to move this example project outside of this repo, update the `Cargo.toml` as follows:
+
+```toml
+# other dependencies
+orca_whirlpools = { version = "^2.0" }
+orca_whirlpools_client = { version = "^2.0" }
+orca_whirlpools_core = { version = "^2.0" }
+# rest of the dependencies
+```
+
+Build the bot:
+
+```bash
+cargo build --release
+```
+
+The executable will be located in target/release/whirlpool_repositioning_bot
+
+---
+
+## RPC Configuration
+
+The bot connects to an SVM network by using an RPC URL. Make a local copy of `.env.template` to `.env` and set your RPC URL there. It is strongly recommended to you use a URL from an RPC provider, or your own RPC node.
+
+```bash
+RPC_URL="https://your-rpc-url.com"
+```
+
+---
+
+## Usage
+
+Run the bot with the following arguments
+
+```bash
+./target/release/lp-bot \
+  --position-mint-address <POSITION_MINT_ADDRESS> \
+  --threshold <THRESHOLD_BPS> \
+  --interval <INTERVAL_IN_SECONDS> \
+  --priority-fee-tier <PRIORITY_FEE_TIER> \
+  --max-priority-fee-lamports <MAX_PRIORITY_FEE_LAMPORTS> \
+  --slippage-tolerance-bps <SLIPPAGE_TOLERANCE_BPS>
+```
+
+### Arguments
+
+- `--position-mint-address` (required): The mint address of the position to monitor and rebalance.
+- `--threshold` (optional): TThe threshold for triggering rebalancing, defined by how far the position's center deviates from the current price. Default: 100.
+- `--interval` (optional): The time interval (in seconds) between checks. Default: 60.
+- `--priority-fee-tier` (optional): The priority fee tier for transaction processing. Options:
+  - `none`: No priority fee.
+  - `low`: Lower 25th quartile prioritization fee.
+  - `medium`: Median prioritization fee (default).
+  - `high`: Upper 80th quartile prioritization fee.
+  - `turbo`: Upper 99th quartile prioritization fee.
+- `max_priority_fee_lamports` (optional): Maximum total priority fee in lamports. Default: 10_000_000 (0.01 SOL).
+- `slippage_tolerance_bps` (optional): Slippage tolerance in basis points (bps). Default: 100.
+
+### Example Usage
+
+Monitor and rebalance with default settings:
+
+```bash
+./target/release/lp-bot \
+  --position-mint-address 5m1izNWC3ioBaKm63e3gSNFeZ44o13ncre5QknTXBJUS
+```
+
+Monitor with custom threshold and interval:
+
+```bash
+./target/release/lp-bot \
+  --position-mint-address 5m1izNWC3ioBaKm63e3gSNFeZ44o13ncre5QknTXBJUS \
+  --threshold 50 \
+  --interval 30
+```
+
+Monitor with turbo priority fees:
+
+```bash
+./target/release/lp-bot \
+  --position-mint-address 5m1izNWC3ioBaKm63e3gSNFeZ44o13ncre5QknTXBJUS \
+  --priority-fee-tier turbo
+```
+
+---
+
+## Directory Structure
+
+```bash
+examples/
+├── rust-sdk/
+    └── whirlpool_repositioning_bot/
+        └── src/
+            ├── main.rs                 # Entry point
+            ├── cli.rs                  # CLI argument parsing
+            ├── wallet.rs               # Wallet management
+            ├── position_manager.rs     # Position monitoring and rebalancing
+            ├── solana_utils.rs         # RPC utilities
+```
+
+
+
+================================================
+FILE: documentation/examples/rust-sdk/whirlpool_repositioning_bot/Cargo.toml
+================================================
+[package]
+name = "whirlpool_repositioning_bot"
+version = "0.2.2"
+edition = "2021"
+
+[dependencies]
+clap = { version = "^4.5.21", features = ["derive"] }
+colored = { version = "^2.0" }
+
+# We are using the local versions of the Whirlpools SDKs. However, when you move
+# this example to a new repository, you can use the latest versions of the SDKs by 
+# uncommenting the following lines:
+# 
+# orca_whirlpools = { version = "^2.0" }
+# orca_whirlpools_client = { version = "^2.0" }
+# orca_whirlpools_core = { version = "^2.0" }
+#
+# And removing the following lines:
+orca_whirlpools = { path = '../../../rust-sdk/whirlpool' }
+orca_whirlpools_client = { path = '../../../rust-sdk/client' }
+orca_whirlpools_core = { path = '../../../rust-sdk/core' }
+
+serde_json = { version = "^1.0" }
+solana-client = { version = "^2.1" }
+solana-sdk = { version = "^2.1" }
+spl-token-2022 = { version = "^7.0", features = ["no-entrypoint"] }
+spl-associated-token-account = { version = "^6.0" }
+tokio = { version = "^1.41.1" }
+tokio-retry = { version = "^0.3.0" }
+dotenv = { version = "^0.15.0" }
+
+
+
+================================================
+FILE: documentation/examples/rust-sdk/whirlpool_repositioning_bot/CHANGELOG.md
+================================================
+# @orca-so/whirlpools-example-rust-repositioning-bot
+
+## 0.2.2
+
+### Patch Changes
+
+- [#884](https://github.com/orca-so/whirlpools/pull/884) [`6cd51d6`](https://github.com/orca-so/whirlpools/commit/6cd51d64de8fe0f310c1bf2f3a5e659a68c426d0) Thanks [@calintje](https://github.com/calintje)! - Updated cargo.lock
+
+## 0.2.1
+
+### Patch Changes
+
+- [#821](https://github.com/orca-so/whirlpools/pull/821) [`c72652d`](https://github.com/orca-so/whirlpools/commit/c72652dbb21a57d2b715415e14f3fcd65f4b0728) Thanks [@calintje](https://github.com/calintje)! - Fix calculation of position deviation
+
+## 0.2.0
+
+### Minor Changes
+
+- [#726](https://github.com/orca-so/whirlpools/pull/726) [`7f0ca73`](https://github.com/orca-so/whirlpools/commit/7f0ca73f49ce8354bb9156bba326cd5d9e93d665) Thanks [@wjthieme](https://github.com/wjthieme)! - Add support for solana v2 crates
+
+## 0.1.1
+
+### Patch Changes
+
+- [#679](https://github.com/orca-so/whirlpools/pull/679) [`a685353`](https://github.com/orca-so/whirlpools/commit/a68535343396e425e05d65fa9e319dc34b4ace0e) Thanks [@calintje](https://github.com/calintje)! - Updated installation guide.
+
+- [#680](https://github.com/orca-so/whirlpools/pull/680) [`bc70bfb`](https://github.com/orca-so/whirlpools/commit/bc70bfb40068bb13282a92a7b36f501429470b27) Thanks [@wjthieme](https://github.com/wjthieme)! - Initial changeset version
+
+
+
+================================================
+FILE: documentation/examples/rust-sdk/whirlpool_repositioning_bot/package.json
+================================================
+{
+  "name": "@orca-so/whirlpools-example-rust-repositioning-bot",
+  "version": "0.2.2",
+  "private": true,
+  "scripts": {
+    "build": "cargo build",
+    "format": "cargo clippy --fix --allow-dirty --allow-staged && cargo fmt",
+    "lint": "cargo clippy && cargo fmt --check",
+    "clean": "cargo clean"
+  },
+  "devDependencies": {
+    "@orca-so/whirlpools-rust": "*",
+    "@orca-so/whirlpools-rust-client": "*",
+    "@orca-so/whirlpools-rust-core": "*"
+  }
+}
+
+
+
+================================================
+FILE: documentation/examples/rust-sdk/whirlpool_repositioning_bot/.env.template
+================================================
+RPC_URL="https://api.mainnet-beta.solana.com"
+
+
+================================================
+FILE: documentation/examples/rust-sdk/whirlpool_repositioning_bot/src/cli.rs
+================================================
+use clap::Parser;
+
+use crate::utils::PriorityFeeTier;
+
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+pub struct Args {
+    #[arg(
+        short = 'p',
+        long,
+        help = "The position mint address to monitor and rebalance."
+    )]
+    pub position_mint_address: String,
+
+    #[arg(
+        short = 't',
+        long,
+        default_value_t = 100,
+        help = "Threshold for repositioning in bps.\n"
+    )]
+    pub threshold: u16,
+
+    #[arg(
+        short = 'i',
+        long,
+        default_value_t = 60,
+        help = "Time interval for checking in seconds.\n"
+    )]
+    pub interval: u64,
+
+    #[arg(
+        short = 'f',
+        long,
+        value_enum,
+        default_value_t = PriorityFeeTier::Medium,
+        help = "Priority fee tier for transaction processing based on recently paid priority fees. Options:\n  \
+                - `none`: No priority fee\n  \
+                - `low`: Lower 25th quartile prioritization fee\n  \
+                - `medium`: Median prioritization fee\n  \
+                - `high`: Upper 80th quartile prioritization fee\n  \
+                - `turbo`: Upper 99th quartile prioritization fee\n"
+    )]
+    pub priority_fee_tier: PriorityFeeTier,
+
+    #[arg(
+        short = 'm',
+        long,
+        default_value_t = 10_000_000,
+        help = "Maximum total priority fee in lamports.\n"
+    )]
+    pub max_priority_fee_lamports: u64,
+
+    #[arg(
+        short = 's',
+        long,
+        default_value_t = 100,
+        help = "Slippage tolerance in basis points (bps).\n"
+    )]
+    pub slippage_tolerance_bps: u16,
+}
+
+
+
+================================================
+FILE: documentation/examples/rust-sdk/whirlpool_repositioning_bot/src/main.rs
+================================================
+mod cli;
+mod position_manager;
+mod utils;
+mod wallet;
+
+use clap::Parser;
+use cli::Args;
+use colored::Colorize;
+use dotenv::dotenv;
+use orca_whirlpools::{set_funder, set_whirlpools_config_address, WhirlpoolsConfigInput};
+use orca_whirlpools_client::get_position_address;
+use position_manager::run_position_manager;
+use solana_client::nonblocking::rpc_client::RpcClient;
+use solana_sdk::pubkey::Pubkey;
+use std::env;
+use std::str::FromStr;
+use tokio::time::{sleep, Duration};
+use utils::{
+    display_position_balances, display_wallet_balances, fetch_mint, fetch_position, fetch_whirlpool,
+};
+
+#[tokio::main]
+async fn main() {
+    let args = Args::parse();
+    dotenv().ok();
+    let rpc_url = env::var("RPC_URL").unwrap();
+    let rpc = RpcClient::new(rpc_url.to_string());
+    set_whirlpools_config_address(WhirlpoolsConfigInput::SolanaMainnet)
+        .expect("Failed to set Whirlpools config address for specified network.");
+    let wallet = wallet::load_wallet();
+    set_funder(wallet.pubkey()).expect("Failed to set funder address.");
+
+    let position_mint_address = Pubkey::from_str(&args.position_mint_address)
+        .expect("Invalid position mint address provided.");
+
+    println!(
+        "\n\
+        ====================\n\
+        🌀 Whirlpool LP BOT \n\
+        ====================\n"
+    );
+    println!("Configuration:");
+    println!(
+        "  Position Mint Address: {}\n  Threshold: {:.2}bps\n  Interval: {} seconds\n  Priority Fee Tier: {:?}\n  Slippage tolerance bps: {:?}\n",
+        args.position_mint_address, args.threshold, args.interval, args.priority_fee_tier, args.slippage_tolerance_bps
+    );
+
+    println!("-------------------------------------\n");
+
+    let (position_address, _) =
+        get_position_address(&position_mint_address).expect("Failed to derive position address.");
+    let mut position = fetch_position(&rpc, &position_address)
+        .await
+        .expect("Failed to fetch position data.");
+    let whirlpool = fetch_whirlpool(&rpc, &position.whirlpool)
+        .await
+        .expect("Failed to fetch Whirlpool data.");
+    let token_mint_a = fetch_mint(&rpc, &whirlpool.token_mint_a)
+        .await
+        .expect("Failed to fetch Token Mint A data.");
+    let token_mint_b = fetch_mint(&rpc, &whirlpool.token_mint_b)
+        .await
+        .expect("Failed to fetch Token Mint B data.");
+
+    display_wallet_balances(
+        &rpc,
+        &wallet.pubkey(),
+        &whirlpool.token_mint_a,
+        &whirlpool.token_mint_b,
+    )
+    .await
+    .expect("Failed to display wallet balances.");
+
+    display_position_balances(
+        &rpc,
+        &position,
+        &whirlpool.token_mint_a,
+        &whirlpool.token_mint_b,
+        token_mint_a.decimals,
+        token_mint_b.decimals,
+        args.slippage_tolerance_bps,
+    )
+    .await
+    .expect("Failed to display position balances.");
+
+    loop {
+        if let Err(err) = run_position_manager(
+            &rpc,
+            &args,
+            &wallet,
+            &mut position,
+            &token_mint_a,
+            &token_mint_b,
+        )
+        .await
+        {
+            eprintln!("{}", format!("Error: {}", err).to_string().red());
+        }
+        sleep(Duration::from_secs(args.interval)).await;
+    }
+}
+
+
+
+================================================
+FILE: documentation/examples/rust-sdk/whirlpool_repositioning_bot/src/position_manager.rs
+================================================
+use crate::{
+    cli::Args,
+    utils::{
+        display_position_balances, display_wallet_balances, fetch_position, fetch_whirlpool,
+        send_transaction,
+    },
+};
+use colored::Colorize;
+use orca_whirlpools::{
+    close_position_instructions, open_position_instructions, IncreaseLiquidityParam,
+};
+use orca_whirlpools_client::{get_position_address, Position};
+use orca_whirlpools_core::{sqrt_price_to_price, tick_index_to_price};
+use solana_client::nonblocking::rpc_client::RpcClient;
+use solana_sdk::signer::Signer;
+use spl_token_2022::state::Mint;
+
+pub async fn run_position_manager(
+    rpc: &RpcClient,
+    args: &Args,
+    wallet: &Box<dyn Signer>,
+    position: &mut Position,
+    token_mint_a: &Mint,
+    token_mint_b: &Mint,
+) -> Result<(), Box<dyn std::error::Error>> {
+    println!("Checking position.");
+
+    let whirlpool_address = position.whirlpool;
+    let whirlpool = fetch_whirlpool(rpc, &whirlpool_address)
+        .await
+        .map_err(|_| "Failed to fetch Whirlpool data.")?;
+
+    let current_price = sqrt_price_to_price(
+        whirlpool.sqrt_price,
+        token_mint_a.decimals,
+        token_mint_b.decimals,
+    );
+    let position_lower_price = tick_index_to_price(
+        position.tick_lower_index,
+        token_mint_a.decimals,
+        token_mint_b.decimals,
+    );
+    let position_upper_price = tick_index_to_price(
+        position.tick_upper_index,
+        token_mint_a.decimals,
+        token_mint_b.decimals,
+    );
+    let position_center_price = (position_lower_price + position_upper_price) / 2.0;
+
+    let deviation_amount = if current_price > position_center_price {
+        current_price - position_center_price
+    } else {
+        position_center_price - current_price
+    };
+    let deviation_bps = (deviation_amount * 10000.0) / (position_center_price);
+
+    println!("Current pool price: {:.6}", current_price);
+    println!(
+        "Position price range: [{:.6}, {:.6}]",
+        position_lower_price, position_upper_price
+    );
+    println!("Position center price: {:.6}", position_center_price);
+    println!("Price deviation from center: {:.2} bps", deviation_bps);
+
+    if deviation_bps as u16 >= args.threshold {
+        println!(
+            "{}",
+            "Deviation exceeds threshold. Rebalancing position."
+                .to_string()
+                .yellow()
+        );
+
+        let close_position_instructions = close_position_instructions(
+            rpc,
+            position.position_mint,
+            Some(args.slippage_tolerance_bps),
+            None,
+        )
+        .await
+        .map_err(|_| "Failed to generate close position instructions.")?;
+
+        let new_lower_price = current_price - (position_upper_price - position_lower_price) / 2.0;
+        let new_upper_price = current_price + (position_upper_price - position_lower_price) / 2.0;
+
+        let increase_liquidity_param =
+            IncreaseLiquidityParam::Liquidity(close_position_instructions.quote.liquidity_delta);
+        let open_position_instructions = open_position_instructions(
+            rpc,
+            whirlpool_address,
+            new_lower_price,
+            new_upper_price,
+            increase_liquidity_param,
+            Some(100),
+            None,
+        )
+        .await
+        .map_err(|_| "Failed to generate open position instructions.")?;
+
+        let mut all_instructions = vec![];
+        all_instructions.extend(close_position_instructions.instructions);
+        all_instructions.extend(open_position_instructions.instructions);
+
+        let mut signers: Vec<&dyn Signer> = vec![wallet.as_ref()];
+        signers.extend(
+            open_position_instructions
+                .additional_signers
+                .iter()
+                .map(|kp| kp as &dyn Signer),
+        );
+        signers.extend(
+            close_position_instructions
+                .additional_signers
+                .iter()
+                .map(|kp| kp as &dyn Signer),
+        );
+
+        let signature = send_transaction(
+            rpc,
+            wallet.as_ref(),
+            &whirlpool_address,
+            all_instructions,
+            signers,
+            args.priority_fee_tier,
+            args.max_priority_fee_lamports,
+        )
+        .await
+        .map_err(|_| "Failed to send rebalancing transaction.")?;
+        println!("Rebalancing transaction signature: {}", signature);
+
+        let position_mint_address = open_position_instructions.position_mint;
+        println!("New position mint address: {}", position_mint_address);
+        let (position_address, _) = get_position_address(&position_mint_address)
+            .map_err(|_| "Failed to derive new position address.")?;
+        *position = fetch_position(rpc, &position_address)
+            .await
+            .map_err(|_| "Failed to fetch new position data.")?;
+
+        display_wallet_balances(
+            rpc,
+            &wallet.pubkey(),
+            &whirlpool.token_mint_a,
+            &whirlpool.token_mint_b,
+        )
+        .await
+        .map_err(|_| "Failed to display wallet balances.")?;
+
+        display_position_balances(
+            rpc,
+            position,
+            &whirlpool.token_mint_a,
+            &whirlpool.token_mint_b,
+            token_mint_a.decimals,
+            token_mint_b.decimals,
+            args.slippage_tolerance_bps,
+        )
+        .await
+        .map_err(|_| "Failed to display position balances.")?;
+    } else {
+        println!(
+            "{}",
+            "Current price is within range. No repositioning needed."
+                .to_string()
+                .green()
+        );
+    }
+    Ok(())
+}
+
+
+
+================================================
+FILE: documentation/examples/rust-sdk/whirlpool_repositioning_bot/src/utils.rs
+================================================
+use clap::ValueEnum;
+use orca_whirlpools::close_position_instructions;
+use orca_whirlpools_client::{Position, Whirlpool};
+use solana_client::nonblocking::rpc_client::RpcClient;
+use solana_client::rpc_config::RpcSendTransactionConfig;
+use solana_sdk::commitment_config::CommitmentLevel;
+use solana_sdk::compute_budget::ComputeBudgetInstruction;
+use solana_sdk::{
+    message::Message, program_pack::Pack, pubkey::Pubkey, signature::Signature, signer::Signer,
+    transaction::Transaction,
+};
+use spl_associated_token_account::get_associated_token_address_with_program_id;
+use spl_token_2022::state::Mint;
+use std::error::Error;
+use tokio::time::{sleep, Duration, Instant};
+use tokio_retry::strategy::ExponentialBackoff;
+use tokio_retry::Retry;
+
+pub async fn display_position_balances(
+    rpc: &RpcClient,
+    position: &Position,
+    token_mint_a_address: &Pubkey,
+    token_mint_b_address: &Pubkey,
+    decimals_a: u8,
+    decimals_b: u8,
+    slippage_tolerance_bps: u16,
+) -> Result<(), Box<dyn Error>> {
+    let close_position_instructions = close_position_instructions(
+        rpc,
+        position.position_mint,
+        Some(slippage_tolerance_bps),
+        None,
+    )
+    .await?;
+
+    let positon_balance_token_a =
+        close_position_instructions.quote.token_est_a as f64 / 10u64.pow(decimals_a as u32) as f64;
+    let positon_balance_token_b =
+        close_position_instructions.quote.token_est_b as f64 / 10u64.pow(decimals_b as u32) as f64;
+
+    println!(
+        "Position Balances: \n\
+        - Token A ({:?}): {} \n\
+        - Token B ({:?}): {} \n",
+        token_mint_a_address,
+        positon_balance_token_a,
+        token_mint_b_address,
+        positon_balance_token_b
+    );
+
+    Ok(())
+}
+
+pub async fn display_wallet_balances(
+    rpc: &RpcClient,
+    wallet_address: &Pubkey,
+    token_mint_a_address: &Pubkey,
+    token_mint_b_address: &Pubkey,
+) -> Result<(), Box<dyn Error>> {
+    let token_a_balance = fetch_token_balance(rpc, wallet_address, token_mint_a_address).await?;
+    let token_b_balance = fetch_token_balance(rpc, wallet_address, token_mint_b_address).await?;
+
+    println!(
+        "Wallet Balances: \n\
+        - Token A ({:?}): {} \n\
+        - Token B ({:?}): {}",
+        token_mint_a_address, token_a_balance, token_mint_b_address, token_b_balance
+    );
+
+    Ok(())
+}
+
+pub async fn fetch_token_balance(
+    rpc: &RpcClient,
+    wallet_address: &Pubkey,
+    token_mint_address: &Pubkey,
+) -> Result<String, Box<dyn Error>> {
+    let mint_account = rpc.get_account(token_mint_address).await?;
+    let token_program_id = mint_account.owner;
+    let token_address = get_associated_token_address_with_program_id(
+        wallet_address,
+        token_mint_address,
+        &token_program_id,
+    );
+    let balance = rpc.get_token_account_balance(&token_address).await?;
+    Ok(balance.ui_amount_string)
+}
+
+pub async fn fetch_position(
+    rpc: &RpcClient,
+    position_address: &Pubkey,
+) -> Result<Position, Box<dyn Error>> {
+    Retry::spawn(
+        ExponentialBackoff::from_millis(500)
+            .max_delay(Duration::from_secs(5))
+            .take(5),
+        || async {
+            let position_account = rpc.get_account(position_address).await?;
+            let position = Position::from_bytes(&position_account.data)?;
+            Ok(position)
+        },
+    )
+    .await
+}
+
+pub async fn fetch_whirlpool(
+    rpc: &RpcClient,
+    whirlpool_address: &Pubkey,
+) -> Result<Whirlpool, Box<dyn Error>> {
+    let whirlpool_account = rpc.get_account(whirlpool_address).await?;
+    let whirlpool = Whirlpool::from_bytes(&whirlpool_account.data)?;
+    Ok(whirlpool)
+}
+
+pub async fn fetch_mint(rpc: &RpcClient, mint_address: &Pubkey) -> Result<Mint, Box<dyn Error>> {
+    let mint_account = rpc.get_account(mint_address).await?;
+    let mint = Mint::unpack(&mint_account.data)?;
+    Ok(mint)
+}
+
+#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
+pub enum PriorityFeeTier {
+    None,
+    Low,
+    Medium,
+    High,
+    Turbo,
+}
+
+pub async fn send_transaction(
+    rpc: &RpcClient,
+    wallet: &dyn Signer,
+    whirlpool_address: &Pubkey,
+    instructions: Vec<solana_sdk::instruction::Instruction>,
+    additional_signers: Vec<&dyn Signer>,
+    tier: PriorityFeeTier,
+    max_priority_fee: u64,
+) -> Result<Signature, Box<dyn Error>> {
+    let mut all_instructions = vec![];
+
+    let recent_blockhash = rpc.get_latest_blockhash().await?;
+
+    let compute_unit_instructions = get_compute_unit_instructions(
+        rpc,
+        &instructions,
+        wallet,
+        whirlpool_address,
+        &additional_signers,
+        tier,
+        max_priority_fee,
+        recent_blockhash,
+    )
+    .await?;
+    all_instructions.extend(compute_unit_instructions);
+
+    all_instructions.extend(instructions.clone());
+
+    let message = Message::new(&all_instructions, Some(&wallet.pubkey()));
+    let mut all_signers = vec![wallet];
+    all_signers.extend(additional_signers.clone());
+
+    let transaction = Transaction::new(&all_signers, message, recent_blockhash);
+    let transaction_config = RpcSendTransactionConfig {
+        skip_preflight: true,
+        preflight_commitment: Some(CommitmentLevel::Confirmed),
+        max_retries: Some(0),
+        ..Default::default()
+    };
+    let start_time = Instant::now();
+    let timeout = Duration::from_secs(90);
+
+    let send_transaction_result = loop {
+        if start_time.elapsed() >= timeout {
+            break Err(Box::<dyn std::error::Error>::from("Transaction timed out"));
+        }
+        let signature: Signature = rpc
+            .send_transaction_with_config(&transaction, transaction_config)
+            .await?;
+        let statuses = rpc.get_signature_statuses(&[signature]).await?.value;
+        if let Some(status) = statuses[0].clone() {
+            break Ok((status, signature));
+        }
+        sleep(Duration::from_millis(100)).await;
+    };
+    send_transaction_result.and_then(|(status, signature)| {
+        if let Some(err) = status.err {
+            Err(Box::new(err))
+        } else {
+            Ok(signature)
+        }
+    })
+}
+
+async fn get_compute_unit_instructions(
+    rpc: &RpcClient,
+    instructions: &[solana_sdk::instruction::Instruction],
+    wallet: &dyn Signer,
+    whirlpool_address: &Pubkey,
+    additional_signers: &[&dyn Signer],
+    tier: PriorityFeeTier,
+    max_priority_fee_lamports: u64,
+    recent_blockhash: solana_sdk::hash::Hash,
+) -> Result<Vec<solana_sdk::instruction::Instruction>, Box<dyn Error>> {
+    let mut compute_unit_instructions = vec![];
+
+    let message = Message::new(instructions, Some(&wallet.pubkey()));
+    let mut signers = vec![wallet];
+    signers.extend(additional_signers);
+
+    let transaction = Transaction::new(&signers, message, recent_blockhash);
+    let simulated_transaction = rpc.simulate_transaction(&transaction).await?;
+
+    if let Some(units_consumed) = simulated_transaction.value.units_consumed {
+        let units_margin = std::cmp::max(100_000, (units_consumed as f32 * 0.2).ceil() as u32);
+        let units_consumed_safe = units_consumed as u32 + units_margin;
+        let compute_limit_instruction =
+            ComputeBudgetInstruction::set_compute_unit_limit(units_consumed_safe);
+        compute_unit_instructions.push(compute_limit_instruction);
+
+        if let Some(priority_fee_micro_lamports) =
+            calculate_priority_fee(rpc, tier, whirlpool_address).await?
+        {
+            let mut compute_unit_price = priority_fee_micro_lamports;
+            let total_priority_fee_lamports =
+                (units_consumed_safe as u64 * priority_fee_micro_lamports) / 1_000_000;
+
+            if total_priority_fee_lamports > max_priority_fee_lamports {
+                compute_unit_price =
+                    (max_priority_fee_lamports * 1_000_000) / units_consumed_safe as u64;
+            }
+
+            display_priority_fee_details(
+                compute_unit_price,
+                units_consumed_safe,
+                (units_consumed_safe as u64 * compute_unit_price) / 1_000_000,
+            );
+
+            let priority_fee_instruction =
+                ComputeBudgetInstruction::set_compute_unit_price(compute_unit_price);
+            compute_unit_instructions.push(priority_fee_instruction);
+        }
+    }
+
+    Ok(compute_unit_instructions)
+}
+
+fn display_priority_fee_details(
+    compute_unit_price: u64,
+    units_consumed: u32,
+    total_priority_fee_lamports: u64,
+) {
+    println!(
+        "Priority Fee Details:\n\
+        - Compute unit price: {} microlamports\n\
+        - Estimated compute units: {}\n\
+        - Total priority fee: {} lamports",
+        compute_unit_price, units_consumed, total_priority_fee_lamports
+    );
+}
+
+async fn calculate_priority_fee(
+    rpc: &RpcClient,
+    tier: PriorityFeeTier,
+    whirlpool_address: &Pubkey,
+) -> Result<Option<u64>, Box<dyn Error>> {
+    let prioritization_fees = rpc
+        .get_recent_prioritization_fees(&[*whirlpool_address])
+        .await
+        .unwrap();
+
+    if prioritization_fees.is_empty() || matches!(tier, PriorityFeeTier::None) {
+        return Ok(None);
+    }
+    let mut fees: Vec<u64> = prioritization_fees
+        .iter()
+        .map(|fee| fee.prioritization_fee)
+        .collect();
+    fees.sort_unstable();
+
+    let fee = match tier {
+        PriorityFeeTier::Low => fees.get(fees.len() / 4).cloned(),
+        PriorityFeeTier::Medium => fees.get(fees.len() / 2).cloned(),
+        PriorityFeeTier::High => fees.get((fees.len() * 4) / 5).cloned(),
+        PriorityFeeTier::Turbo => fees.get((fees.len() * 99) / 100).cloned(),
+        PriorityFeeTier::None => None,
+    };
+
+    Ok(fee)
+}
+
+
+
+================================================
+FILE: documentation/examples/rust-sdk/whirlpool_repositioning_bot/src/wallet.rs
+================================================
+use solana_sdk::{signature::Keypair, signer::Signer};
+use std::fs;
+
+pub fn load_wallet() -> Box<dyn Signer> {
+    let wallet_string = fs::read_to_string("wallet.json").unwrap();
+    let keypair_bytes: Vec<u8> = serde_json::from_str(&wallet_string).unwrap();
+    let wallet = Keypair::from_bytes(&keypair_bytes).unwrap();
+    Box::new(wallet)
+}
+
+
+
+================================================
+FILE: documentation/examples/ts-sdk/next/README.md
+================================================
+# Whirlpools Next.js Example
+
+This example demonstrates how to use the Whirlpools SDK in a Next.js application. Since the Orca SDK suite uses WebAssembly, the `experiments.asyncWebAssembly` feature of webpack must be enabled and `@orca-so/whirlpools-core` needs to be added as a `serverExternalPackages`. See `next.config.js` for more details.
+
+
+
+
+================================================
+FILE: documentation/examples/ts-sdk/next/CHANGELOG.md
+================================================
+# @orca-so/whirlpools-example-ts-next
+
+## 0.1.2
+
+### Patch Changes
+
+- [#788](https://github.com/orca-so/whirlpools/pull/788) [`7d2f507`](https://github.com/orca-so/whirlpools/commit/7d2f507081398973e712390281df535b3fc8988c) Thanks [@wjthieme](https://github.com/wjthieme)! - Switch from @solana/web3.js v2 to @solana/kit
+
+- Updated dependencies [[`ca5f054`](https://github.com/orca-so/whirlpools/commit/ca5f054066d34943eefe72228b442525e849eaeb), [`7d2f507`](https://github.com/orca-so/whirlpools/commit/7d2f507081398973e712390281df535b3fc8988c)]:
+  - @orca-so/whirlpools@1.0.4
+
+## 0.1.1
+
+### Patch Changes
+
+- [#680](https://github.com/orca-so/whirlpools/pull/680) [`bc70bfb`](https://github.com/orca-so/whirlpools/commit/bc70bfb40068bb13282a92a7b36f501429470b27) Thanks [@wjthieme](https://github.com/wjthieme)! - Initial changeset version
+
+- Updated dependencies [[`bc70bfb`](https://github.com/orca-so/whirlpools/commit/bc70bfb40068bb13282a92a7b36f501429470b27)]:
+  - @orca-so/whirlpools@1.0.3
+
+
+
+================================================
+FILE: documentation/examples/ts-sdk/next/next-env.d.ts
+================================================
+/// <reference types="next" />
+/// <reference types="next/image-types/global" />
+
+// NOTE: This file should not be edited
+// see https://nextjs.org/docs/app/api-reference/config/typescript for more information.
+
+
+
+================================================
+FILE: documentation/examples/ts-sdk/next/next.config.js
+================================================
+import NextBundleAnalyzer from "@next/bundle-analyzer";
+import CopyWebpackPlugin from "copy-webpack-plugin";
+
+const nextConfig = {
+  serverExternalPackages: ["@orca-so/whirlpools-core"],
+  webpack(config, { isServer }) {
+    config.experiments.asyncWebAssembly = true;
+
+    // Copy `orca_whirlpools_core_js_bindings_bg.wasm` file
+    // This is only needed because of the monorepo setup
+    // (local dependencies are symlinked and next doesn't like that)
+    config.plugins.push(
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: "../../../ts-sdk/core/dist/nodejs/orca_whirlpools_core_js_bindings_bg.wasm",
+            to: "./server/app",
+          },
+        ],
+      }),
+    );
+
+    // The following supresses a warning about using top-level-await and is optional
+    if (!isServer) {
+      config.output.environment = {
+        ...config.output.environment,
+        asyncFunction: true,
+      };
+    }
+
+    return config;
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  reactStrictMode: true,
+};
+
+const withBundleAnalyzer = NextBundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
+
+export default withBundleAnalyzer(nextConfig);
+
+
+
+================================================
+FILE: documentation/examples/ts-sdk/next/package.json
+================================================
+{
+  "name": "@orca-so/whirlpools-example-ts-next",
+  "version": "0.1.2",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "next dev",
+    "build": "next build",
+    "clean": "rimraf .next"
+  },
+  "dependencies": {
+    "@orca-so/whirlpools": "*",
+    "@solana/kit": "^2.1.0",
+    "next": "^15.2.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@next/bundle-analyzer": "^15.2.4",
+    "@types/node": "^22.14.0",
+    "@types/react": "^18.3.13",
+    "copy-webpack-plugin": "^13.0.0",
+    "typescript": "^5.8.2",
+    "webpack": "^5.98.0"
+  }
+}
+
+
+
+================================================
+FILE: documentation/examples/ts-sdk/next/tsconfig.json
+================================================
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "noEmit": true,
+    "incremental": true
+  },
+  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}
+
+
+
+================================================
+FILE: documentation/examples/ts-sdk/next/app/layout.tsx
+================================================
+import { ReactNode } from "react";
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
+
+
+
+================================================
+FILE: documentation/examples/ts-sdk/next/app/page.tsx
+================================================
+"use client";
+import { fetchPositionsForOwner, PositionOrBundle } from "@orca-so/whirlpools";
+import { tickIndexToSqrtPrice } from "@orca-so/whirlpools-core";
+import { useCallback, useMemo, useState } from "react";
+import { createSolanaRpc, mainnet, address, devnet } from "@solana/kit";
+
+export default function Page() {
+  const [positions, setPositions] = useState<PositionOrBundle[]>([]);
+  const [owner, setOwner] = useState<string>("");
+  const [tickIndex, setTickIndex] = useState<string>("");
+  const [sqrtPrice, setSqrtPrice] = useState<bigint>();
+
+  const rpc = useMemo(() => {
+    if (!process.env.NEXT_PUBLIC_RPC_URL) {
+      console.error("NEXT_PUBLIC_RPC_URL is not set");
+      return createSolanaRpc(devnet("https://api.devnet.solana.com"));
+    }
+    return createSolanaRpc(mainnet(process.env.NEXT_PUBLIC_RPC_URL));
+  }, [process.env.NEXT_PUBLIC_RPC_URL]);
+
+  const fetchPositions = useCallback(async () => {
+    const positions = await fetchPositionsForOwner(rpc, address(owner));
+    setPositions(positions);
+  }, [owner]);
+
+  const convertTickIndex = useCallback(() => {
+    const index = parseInt(tickIndex);
+    setSqrtPrice(tickIndexToSqrtPrice(index));
+  }, [tickIndex]);
+
+  return (
+    <div>
+      <p>
+        <input
+          type="number"
+          value={tickIndex}
+          onChange={(e) => setTickIndex(e.target.value)}
+        />{" "}
+        <button onClick={() => convertTickIndex()}>Convert</button>{" "}
+        {sqrtPrice !== undefined && <>Sqrt Price: {sqrtPrice.toString()}</>}
+      </p>
+      <p>
+        <input
+          type="text"
+          value={owner}
+          onChange={(e) => setOwner(e.target.value)}
+        />{" "}
+        <button onClick={() => fetchPositions()}>Fetch Positions</button>{" "}
+        {positions.length > 0 && <>{positions.length} positions found</>}
+      </p>
+    </div>
+  );
+}
+
+

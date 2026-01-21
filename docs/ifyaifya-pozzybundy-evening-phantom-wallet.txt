@@ -1,0 +1,3252 @@
+Directory structure:
+└── phantom-wallet/
+    ├── README.md
+    ├── SUMMARY.md
+    ├── best-practices/
+    │   ├── displaying-apps-within-the-activity-tab.md
+    │   ├── displaying-your-app.md
+    │   └── tokens/
+    │       ├── README.md
+    │       ├── collectibles-nfts-and-semi-fungibles.md
+    │       ├── home-tab-fungibles.md
+    │       └── supported-media-types.md
+    ├── deeplinks/
+    │   ├── deeplinks-ios-and-android.md
+    │   ├── encryption.md
+    │   ├── handling-sessions.md
+    │   ├── limitations.md
+    │   ├── specifying-redirects.md
+    │   ├── other-methods/
+    │   │   ├── README.md
+    │   │   └── browse.md
+    │   └── provider-methods/
+    │       ├── README.md
+    │       ├── connect.md
+    │       ├── disconnect.md
+    │       ├── signalltransactions.md
+    │       ├── signandsendtransaction.md
+    │       ├── signmessage.md
+    │       └── signtransaction.md
+    ├── development-powertools/
+    │   ├── blocklist.md
+    │   ├── mobile-web-debugging.md
+    │   ├── signing-a-message.md
+    │   ├── solana-priority-fees.md
+    │   ├── solana-versioned-transactions.md
+    │   ├── solana-wallet-standard.md
+    │   └── testnet-mode.md
+    ├── ethereum-polygon/
+    │   ├── detecting-the-provider.md
+    │   ├── establishing-a-connection.md
+    │   ├── getting-started.md
+    │   ├── sending-a-transaction.md
+    │   ├── signing-a-message.md
+    │   └── provider-api-reference/
+    │       ├── README.md
+    │       ├── errors.md
+    │       ├── events/
+    │       │   ├── README.md
+    │       │   ├── accounts-changed.md
+    │       │   ├── chain-changed.md
+    │       │   ├── connect.md
+    │       │   └── disconnect.md
+    │       ├── methods/
+    │       │   ├── README.md
+    │       │   ├── isconnected.md
+    │       │   └── request.md
+    │       └── properties/
+    │           ├── README.md
+    │           ├── _events.md
+    │           ├── _eventscount.md
+    │           ├── chainid.md
+    │           ├── isphantom.md
+    │           ├── networkversion.md
+    │           └── selectedaddress.md
+    ├── integrating-with-libraries/
+    │   └── ethereum-and-polygon/
+    │       ├── README.md
+    │       └── integrating-with-web3-onboard.md
+    ├── resources/
+    │   ├── assets.md
+    │   ├── community-guides-and-sdks.md
+    │   ├── faq.md
+    │   └── sandbox.md
+    └── solana/
+        ├── detecting-the-provider.md
+        ├── errors.md
+        ├── establishing-a-connection.md
+        ├── integrating-phantom.md
+        ├── sending-a-transaction-1.md
+        ├── sending-a-transaction.md
+        └── signing-a-message.md
+
+================================================
+FILE: documentation/phantom-wallet/README.md
+================================================
+---
+cover: .gitbook/assets/phantom-background.jpeg
+coverY: -50.54759898904802
+---
+
+# Introduction
+
+**Phantom** is a crypto wallet that can be used to manage digital assets and access decentralized applications on [Solana](https://solana.com/), [Polygon](https://polygon.technology/), and [Ethereum](https://ethereum.org/en/).&#x20;
+
+Phantom is currently available as:
+
+* A [browser extension](https://phantom.app/download)
+* An [iOS app](https://apps.apple.com/us/app/phantom-solana-wallet/id1598432977)
+* An [Android app](https://play.google.com/store/apps/details?id=app.phantom)
+
+At its core, Phantom works by creating and managing private keys on behalf of its users. These keys can then be used within Phantom to store funds and sign transactions.&#x20;
+
+Developers can interact with Phantom via both **web** applications as well as **iOS and Android** applications.
+
+To interact with web applications, the Phantom [extension and mobile in-app browser](broken-reference) injects a `phantom` object into the javascript context of every site the user visits. A given web app may then interact with Phantom, and ask for the user's permission to perform transactions, through this injected provider.
+
+It's also possible to interact with the Phantom mobile app through [universal links and deeplinks](phantom-deeplinks/deeplinks-ios-and-android.md). With deeplinks, mobile apps can prompt their users to connect, sign, and send with Phantom directly. Once complete, Phantom will redirect users back to their referring applications.
+
+This documentation is intended for developers who are building applications with Phantom. If you are a developer looking for help with an integration, please check out our [developer discord.](https://discord.gg/j5Dp7ztzvW) For all other support requests, please visit our [Help Center](https://help.phantom.app/).
+
+
+
+
+================================================
+FILE: documentation/phantom-wallet/SUMMARY.md
+================================================
+# Table of contents
+
+## 👻 Introduction
+
+* [Introduction](README.md)
+* [Developer Settings](introduction/developer-settings.md)
+
+## 🟪 Getting Started With Solana
+
+* [Getting Started With Solana](getting-started-with-solana/integrating-phantom.md)
+* [Detecting the Provider](getting-started-with-solana/detecting-the-provider.md)
+* [Establishing a Connection](getting-started-with-solana/establishing-a-connection.md)
+* [Sending a Legacy Transaction](getting-started-with-solana/sending-a-transaction.md)
+* [Sending a Versioned Transaction](getting-started-with-solana/sending-a-transaction-1.md)
+* [Signing a Message](getting-started-with-solana/signing-a-message.md)
+* [Error Messages and Codes](getting-started-with-solana/errors.md)
+
+## 🔷 Getting Started with Ethereum & Polygon
+
+* [Getting Started with Ethereum and Polygon](getting-started-with-ethereum-and-polygon/getting-started.md)
+* [Detecting the Provider](getting-started-with-ethereum-and-polygon/detecting-the-provider.md)
+* [Establishing a Connection](getting-started-with-ethereum-and-polygon/establishing-a-connection.md)
+* [Sending a Transaction](getting-started-with-ethereum-and-polygon/sending-a-transaction.md)
+* [Signing a Message](getting-started-with-ethereum-and-polygon/signing-a-message.md)
+* [Provider API Reference](getting-started-with-ethereum-and-polygon/provider-api-reference/README.md)
+  * [Properties](getting-started-with-ethereum-and-polygon/provider-api-reference/properties/README.md)
+    * [isPhantom](getting-started-with-ethereum-and-polygon/provider-api-reference/properties/isphantom.md)
+    * [chainId](getting-started-with-ethereum-and-polygon/provider-api-reference/properties/chainid.md)
+    * [networkVersion](getting-started-with-ethereum-and-polygon/provider-api-reference/properties/networkversion.md)
+    * [selectedAddress](getting-started-with-ethereum-and-polygon/provider-api-reference/properties/selectedaddress.md)
+    * [\_events](getting-started-with-ethereum-and-polygon/provider-api-reference/properties/\_events.md)
+    * [\_eventsCount](getting-started-with-ethereum-and-polygon/provider-api-reference/properties/\_eventscount.md)
+  * [Events](getting-started-with-ethereum-and-polygon/provider-api-reference/events/README.md)
+    * [Connect](getting-started-with-ethereum-and-polygon/provider-api-reference/events/connect.md)
+    * [Accounts Changed](getting-started-with-ethereum-and-polygon/provider-api-reference/events/accounts-changed.md)
+    * [Disconnect](getting-started-with-ethereum-and-polygon/provider-api-reference/events/disconnect.md)
+    * [Chain Changed](getting-started-with-ethereum-and-polygon/provider-api-reference/events/chain-changed.md)
+  * [Methods](getting-started-with-ethereum-and-polygon/provider-api-reference/methods/README.md)
+    * [isConnected](getting-started-with-ethereum-and-polygon/provider-api-reference/methods/isconnected.md)
+    * [request](getting-started-with-ethereum-and-polygon/provider-api-reference/methods/request.md)
+  * [Error Messages & Codes](getting-started-with-ethereum-and-polygon/provider-api-reference/errors.md)
+
+## ⛓ Phantom Deeplinks
+
+* [Phantom Deeplinks](phantom-deeplinks/deeplinks-ios-and-android.md)
+* [Provider Methods](phantom-deeplinks/provider-methods/README.md)
+  * [Connect](phantom-deeplinks/provider-methods/connect.md)
+  * [Disconnect](phantom-deeplinks/provider-methods/disconnect.md)
+  * [SignAndSendTransaction](phantom-deeplinks/provider-methods/signandsendtransaction.md)
+  * [SignAllTransactions](phantom-deeplinks/provider-methods/signalltransactions.md)
+  * [SignTransaction](phantom-deeplinks/provider-methods/signtransaction.md)
+  * [SignMessage](phantom-deeplinks/provider-methods/signmessage.md)
+* [Other Methods](phantom-deeplinks/other-methods/README.md)
+  * [Browse](phantom-deeplinks/other-methods/browse.md)
+* [Handling Sessions](phantom-deeplinks/handling-sessions.md)
+* [Specifying Redirects](phantom-deeplinks/specifying-redirects.md)
+* [Encryption](phantom-deeplinks/encryption.md)
+* [Limitations](phantom-deeplinks/limitations.md)
+
+## 🤝 Integrating with Libraries
+
+* [Ethereum & Polygon](integrating-with-libraries/ethereum-and-polygon/README.md)
+  * [Integrating with Web3-Onboard](integrating-with-libraries/ethereum-and-polygon/integrating-with-web3-onboard.md)
+
+## 🛠 Development Powertools
+
+* [Phantom Blocklist](development-powertools/blocklist.md)
+* [Sign-In-With (SIW) Standard](development-powertools/signing-a-message.md)
+* [Solana Priority Fees](development-powertools/solana-priority-fees.md)
+* [Solana Versioned Transactions](development-powertools/solana-versioned-transactions.md)
+* [Solana Wallet Standard](development-powertools/solana-wallet-standard.md)
+
+## ✅ Best Practices
+
+* [Displaying Apps within Dialogs](best-practices/displaying-your-app.md)
+* [Displaying Apps within the Activity Tab](best-practices/displaying-apps-within-the-activity-tab.md)
+* [Displaying Tokens on Solana](best-practices/tokens/README.md)
+  * [Fungibles](best-practices/tokens/home-tab-fungibles.md)
+  * [NFTs & Semi-Fungibles](best-practices/tokens/collectibles-nfts-and-semi-fungibles.md)
+  * [Supported Media Types](best-practices/tokens/supported-media-types.md)
+
+## 🙋 Resources
+
+* [FAQ](resources/faq.md)
+* [Demo Applications](resources/sandbox.md)
+* [Community Guides & SDKs](resources/community-guides-and-sdks.md)
+* [Logos & Assets](resources/assets.md)
+
+
+
+================================================
+FILE: documentation/phantom-wallet/best-practices/displaying-apps-within-the-activity-tab.md
+================================================
+# Displaying Apps within the Activity Tab
+
+When a user views their historical activity, Phantom will parse their dApp interactions and enrich them with known metadata. The following are two examples of how Phantom displays historical transactions on Magic Eden and Jupiter, respectively:
+
+<figure><img src="../.gitbook/assets/Screenshot 2023-03-06 at 5.52.40 PM.png" alt=""><figcaption></figcaption></figure>
+
+<figure><img src="../.gitbook/assets/Screenshot 2023-03-06 at 5.51.57 PM (1).png" alt=""><figcaption></figcaption></figure>
+
+To enable this, DApp developers can send an email to [developers@phantom.app](mailto:developers@phantom.app) with the following information:
+
+1. URL of the Website
+2. Display name of the dApp
+3. Program/Contract IDs
+4. Interaction names (corresponding to program IDs)
+
+
+
+================================================
+FILE: documentation/phantom-wallet/best-practices/displaying-your-app.md
+================================================
+# Displaying Apps within Dialogs
+
+![Connection and transaction approval dialog for mango.markets](<../.gitbook/assets/image (7).png>)
+
+When an app is [Establishing a Connection](../getting-started-with-solana/establishing-a-connection.md) or [Sending a Transaction](../getting-started-with-solana/sending-a-transaction.md), Phantom will present the user with the above dialogs. In order to display the title and icon for these dialogs, Phantom will inspect the application's HTML for the following items:
+
+| Value     | Primary Lookup                                                         | Secondary Lookup                                                                          | Fallback       |
+| --------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | -------------- |
+| **Title** | [Open Graph title](https://ogp.me/)                                    | [Document Title Element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/title) | None           |
+| **Icon**  | [Apple touch icon](https://www.computerhope.com/jargon/a/appletou.htm) | [Favicon](https://developer.mozilla.org/en-US/docs/Glossary/Favicon)                      | A default icon |
+
+
+
+
+================================================
+FILE: documentation/phantom-wallet/best-practices/tokens/README.md
+================================================
+# Displaying Tokens
+
+If you've created a token on Solana using the [SPL Token Program](https://spl.solana.com/token), then your token is compatible with Phantom. If Phantom users own a certain balance of an SPL token, that balance will always appear in their wallet. However, if Phantom cannot find more metadata about that token, it will display the token as "Unknown".
+
+### Searching for Metadata
+
+When searching for metadata, Phantom will first look to the [Token Metadata Program](https://docs.metaplex.com/programs/token-metadata/overview) established by [Metaplex](https://www.metaplex.com/). This program enhances ordinary SPL token [mints](https://docs.solana.com/integrations/exchange#token-mints) with a **Metadata Account** that describes additional fields such as the token's `symbol`, `image`, and `description`. Some of these fields exist on-chain in the Metadata Account itself, while others exist off-chain in a JSON file that follows a [standard format](https://docs.metaplex.com/programs/token-metadata/token-standard). The link to this off-chain JSON file is found at the Metadata Account's `uri` field.
+
+If a Metadata Account is found, Phantom will prioritize on-chain fields (e.g. `name`, `symbol`) before off-chain fields described in the `uri` JSON file.
+
+If a token does not have a Metadata Account, Phantom will fallback to reading metadata from the [Solana Labs Token List](https://github.com/solana-labs/token-list). This token list is considered deprecated and should not be used to host new tokens.
+
+### Categorizing Tokens
+
+Phantom will categorize and display tokens based on their [Token Standard](https://docs.metaplex.com/programs/token-metadata/token-standard#token-standards). The `tokenStandard` field can be found in the token's on-chain Metadata Account and is used to describe a token's fungibility. The `tokenStandard` field has four options:
+
+* `Fungible`: A token with simple metadata that can be freely mixed with others of the same mint. Common examples include [USDC](https://www.circle.com/en/usdc) and [SRM](https://www.projectserum.com/).
+* `FungibleAsset`: A token with metadata that can also have NFT-like attributes. Commonly referred to as Semi-Fungible, these tokens are often used in gaming contexts to support stackable items like a piece of wood.
+* `NonFungible`: A non-fungible token with a [Master Edition](https://docs.metaplex.com/programs/token-metadata/accounts#master-edition) account. This is the most popular type of NFT, encompassing well known collections like [Solana Monkey Business](https://solanamonkey.business/) and [DeGods](https://www.degods.com/).
+* `NonFungibleEdition`: A non-fungible token with an [Edition](https://docs.metaplex.com/programs/token-metadata/accounts#edition) account (printed from a Master Edition). This is a helpful feature for creators who want to offer multiple copies of their 1/1 NFTs.
+* `ProgrammableNonFungible`: A new non-fungible asset class which allows for flexible configuration of various lifecycle rules triggered by specific actions. More info about Programmable NFTs or pNFTs can be found [here](https://github.com/metaplex-foundation/metaplex-program-library/blob/master/token-metadata/program/ProgrammableNFTGuide.md).
+
+If no `tokenStandard` is set, Phantom will fallback to categorizing tokens based on the following logic:
+
+1. If the total mint supply is 1, Phantom will consider the token to be `NonFungible`.
+2. If the total mint supply is greater than 1 and the mint has 0 decimals, Phantom will consider the token to be a `FungibleAsset`.
+3. Phantom will consider all other tokens to be `Fungible`.
+
+### Displaying Tokens
+
+Phantom will display all `Fungible` tokens in the Home tab. For more information on `Fungible` token best practices, please see:
+
+{% content-ref url="home-tab-fungibles.md" %}
+[home-tab-fungibles.md](home-tab-fungibles.md)
+{% endcontent-ref %}
+
+All other token standards (`FungibleAsset`, `NonFungible`, and `NonFungibleEdition`) will be displayed in the Collectibles tab. For more information on collectible best practices, please refer to:
+
+{% content-ref url="collectibles-nfts-and-semi-fungibles.md" %}
+[collectibles-nfts-and-semi-fungibles.md](collectibles-nfts-and-semi-fungibles.md)
+{% endcontent-ref %}
+
+
+
+================================================
+FILE: documentation/phantom-wallet/best-practices/tokens/collectibles-nfts-and-semi-fungibles.md
+================================================
+# Collectibles (NFTs & Semi-Fungibles)
+
+On Solana, NFTs are often thought of as [SPL Tokens](https://spl.solana.com/token#example-create-a-non-fungible-token) with 0 decimals and a supply of 1. According to the [Token Metadata Standard](https://docs.metaplex.com/programs/token-metadata/overview), however, it is possible for a range of different tokens to have NFT-like characteristics. Phantom refers to all NFT-like tokens as **collectibles** and will display them separately from `Fungible` tokens that appear on the Home tab. Specifically, Phantom will display all `FungibleAsset`, `NonFungible`, `NonFungibleEdition` and `ProgrammableNonFungible` tokens on their own Collectibles tab.
+
+### Grouping Collectibles
+
+Phantom groups collectibles by their [Certified Collections](https://docs.metaplex.com/programs/token-metadata/certified-collections) introduced in [v1.1.0 of the Token Metadata Standard](http://docs.metaplex.com/token-metadata/Versions/v1.1.0/overview). In order to be grouped together, individual NFTs should all reference the same verified collection mint address. This mint address is itself home to an NFT with metadata that describes the collection ([Example](https://solscan.io/token/SMBH3wF6baUj6JWtzYvqcKuj2XCKWDqQxzspY12xPND#metadata)). Creators must ensure that this collection is [verified on-chain](https://docs.metaplex.com/programs/token-metadata/instructions#verify-the-collection) (i.e. that `verified` is set to `true`).
+
+If no verified collection is found, Phantom will fallback to grouping NFTs by the first verified creator's address in the on-chain `creators` field. If two unverified items share the same creator address at the 0 index of their `creators` array, they will be grouped into the same collection.
+
+### Naming Grouped Collectibles
+
+When a group is created, a best-effort process is used to determine that group’s name. Phantom will look to these fields in the following order of preference:
+
+1. `name` of the verified on-chain collection NFT
+2. `collection.name`
+3. `collection.family`
+4. `external_url` (parsed to remove url parts)
+5. `name` (of a single collectible)
+6. `symbol`
+7. address of the first verified creator in the `creators` array (also used to group the collection)
+
+### Displaying an Individual Collectible
+
+When displaying the detail view of an individual collectible, Phantom will prioritize on-chain data in the Metadata Account over off-chain JSON linked via the `uri` field. This impacts both the `name` and `symbol` field which appears in both locations.
+
+### Rendering Collectible Media
+
+**Supported Media Types**
+
+Phantom supports a wide-range of media types. For a full list, please refer to:
+
+{% content-ref url="supported-media-types.md" %}
+[supported-media-types.md](supported-media-types.md)
+{% endcontent-ref %}
+
+**Selecting Media**
+
+When determining what media to display for a given collectible, Phantom will search the off-chain JSON for data in the following order of preference:
+
+1. `animation_url` — Phantom will select the media source at the collectible's `animation_url` field.
+2. `properties.files` — If no `animation_url` is found, Phantom will choose the first file where the `cdn` property is set to `true`. Otherwise, a file will be chosen based on the media type in the following order of preference:
+   1. `image`
+   2. `audio`
+   3. `video`
+   4. `vr` or `model`
+3. `image` — Finally, if Phantom still cannot find media to display, it will fallback to the media source at the collectible's `image` field.
+
+**Determining Media Type**
+
+If a media source is found in `properties.files`, and that source is defined as an object, Phantom will determine the media type based on that file's `type` property. Under the Token Metadata Standard, file objects are defined with the following structure:
+
+| Field | Type               | Description                                                                                                                                                                                                                                                                                  |
+| ----- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| type  | string             | The media type of the file. If selected, **Phantom will use this to determine the media type** (Example: "image/png").                                                                                                                                                                       |
+| uri   | string             | The uri source of the file (Example: [https://asfh3uxyeoyvtkfqc7jagy3mhtsszhyubnc3wfss5ismdgtw.arweave.net/BIp90vgjs\_VmosBfSA2NsPOUsnxQLRbsWUuo-kwZp2o?ext=png](https://asfh3uxyeoyvtkfqc7jagy3mhtsszhyubnc3wfss5ismdgtw.arweave.net/BIp90vgjs\_VmosBfSA2NsPOUsnxQLRbsWUuo-kwZp2o?ext=png)) |
+| cdn   | boolean (optional) | An optional flag that dictates if the file is hosted on a cdn. If `true`, Phantom will select this file as the primary source file.                                                                                                                                                          |
+
+In cases where Phantom cannot find a source from `properties.files`, it may fallback to a media source that is defined as a `string` (e.g. `animation_url` or `image`). In these cases, Phantom will look for data in the following order of preference:
+
+1. The media source uri’s `?ext=` query string parameter (`https://example.com/foo?ext=png`)
+2. The media source uri’s pathname extension (`https://example.com/foo.png`)
+3. If the media source uri comes from the `animation_url`, Phantom will infer the media type based on the collectible's `properties.category` field.
+4. If the media source uri comes from the `image` field, Phantom will default to assume it is a png.
+
+If no supported media type can be determined, no media will be selected, and users may see a placeholder image instead.
+
+
+
+================================================
+FILE: documentation/phantom-wallet/best-practices/tokens/home-tab-fungibles.md
+================================================
+# Home Tab (Fungibles)
+
+### Displaying Fungible Tokens
+
+Phantom prioritizes on-chain metadata that follows the [Token Metadata Standard](https://docs.metaplex.com/programs/token-metadata/overview). For [Fungible tokens](https://docs.metaplex.com/programs/token-metadata/token-standard#the-fungible-standard) specifically, Phantom will show the following fields:
+
+| Field  | Description                              |
+| ------ | ---------------------------------------- |
+| name   | The name of the token. (i.e. “USD Coin”) |
+| symbol | The symbol of the token. (i.e. ”USDC”)   |
+| image  | A URI pointing to the token's logo.      |
+
+If a `Fungible` token has `name` and `symbol` fields present on both its on-chain Metadata Account and off-chain JSON file (linked via the on-chain `uri` field), Phantom will prioritize the on-chain fields.
+
+If a `Fungible` token does not have an on-chain Metadata Account, Phantom will fallback to displaying data from the [Solana Labs Token List](https://github.com/solana-labs/token-list). This list is considered deprecated and should not be used to host new tokens. When reading from the token list, Phantom will display the following fields:
+
+| Field                  | Description                                                                                      |
+| ---------------------- | ------------------------------------------------------------------------------------------------ |
+| name                   | The name of the token. (i.e. “USD Coin”)                                                         |
+| symbol                 | The symbol of the token. (i.e. ”USDC”)                                                           |
+| logoURI                | A URI pointing to the token's logo.                                                              |
+| extensions.coingeckoID | The token ID as defined by the Coingecko API. Phantom uses this to fetch the price of the token. |
+
+
+
+================================================
+FILE: documentation/phantom-wallet/best-practices/tokens/supported-media-types.md
+================================================
+# Supported Media Types
+
+### Supported Media Types
+
+Phantom supports a range of token media types, including images, audio files, video files, and 3d models. At this time, Phantom does not support HTML files. The following list includes all file types supported by Phantom:
+
+#### Images
+
+* `.jpeg`
+* `.jpg`
+* `.png`
+* `.gif`
+* `.svg`
+
+#### Video
+
+* `.mp4`
+* `.mov`
+* `.webm`
+* `.m4v`
+* `.ogv`
+* `.ogg`
+
+#### Audio
+
+* `.mp3`
+* `.wav`
+* `.oga`
+* `.flac`
+
+#### 3D Models
+
+* `.glb`
+* `.gltf`
+* `.gltf-binary`
+
+
+
+================================================
+FILE: documentation/phantom-wallet/deeplinks/deeplinks-ios-and-android.md
+================================================
+# Phantom Deeplinks
+
+As of Phantom `v22.04.11`, iOS and Android apps can now natively interact with Phantom through either [universal links](https://developer.apple.com/ios/universal-links/) **(recommended)** or [deeplinks](https://en.wikipedia.org/wiki/Mobile\_deep\_linking). We refer to both of these workflows collectively as "deeplinks".
+
+Currently only Solana is supported for deeplinks.
+
+All [Provider Methods](provider-methods/) follow a protocol format of:
+
+```
+https://phantom.app/ul/<version>/<method>
+```
+
+It is also possible (but not recommended) to call these methods using Phantom's custom protocol handler:
+
+```
+phantom://<version>/<method>
+```
+
+In addition to these provider methods, Phantom also supports [Other Methods](other-methods/) that are accessible via deeplinks. Specifically, users can open web apps within Phantom's in-app browser via the [Browse](other-methods/browse.md) deeplink.
+
+
+
+================================================
+FILE: documentation/phantom-wallet/deeplinks/encryption.md
+================================================
+# Encryption
+
+Deeplinks are encrypted using symmetric key encryption generated from a [Diffie-Hellman key exchange](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman\_key\_exchange). While deeplink sessions will be created in plaintext, an encrypted channel will be created to prevent session tokens from getting hijacked.
+
+### Encryption & Decryption Workflow
+
+Phantom deeplinks are encrypted with the following workflows:
+
+#### Connect
+
+1. <mark style="color:green;">\[dapp]:</mark> On the initial [`connect` deeplink](provider-methods/connect.md), dapps should include a `dapp_encryption_public_key` query parameter. It's recommended to create a new x25519 keypair for every session started with `connect`. In all methods, the public key for this keypair is referred to as `dapp_encryption_public_key`.
+2. <mark style="color:purple;">\[phantom]:</mark> Upon handling a `connect` deeplink, Phantom will also generate a new x25519 keypair.
+   * Phantom will return this public key as `phantom_encryption_public_key` in the `connect` response.
+   * Phantom will create a secret key using Diffie-Hellman with `dapp_encryption_public_key` and the _**private key**_ associated with `phantom_encryption_public_key`.
+   * Phantom will locally store a mapping of `dapp_encryption_public_key` to shared secrets for use with decryption in subsequent deeplinks.
+3. <mark style="color:green;">\[dapp]:</mark> Upon receiving the `connect` response, the dapp should create a shared secret by using Diffie-Hellman with `phantom_encryption_public_key` and the _**private key**_ associated with `dapp_encryption_public_key`. This shared secret should then be used to decrypt the `data` field in the response. If done correctly, the user's public key will be available to share with the dapp inside the `data` JSON object.
+
+#### Subsequent Deeplinks
+
+1. <mark style="color:green;">\[dapp]:</mark> For any subsequent methods (such as [SignAndSendTransaction](provider-methods/signandsendtransaction.md) and [SignMessage](provider-methods/signmessage.md)), dapps should send a `dapp_encryption_public_key` (the public key side of the shared secret) used with Phantom along with an encrypted `payload` object.&#x20;
+2. <mark style="color:purple;">\[phantom]:</mark> Upon approval, Phantom will encrypt the signed response as a JSON object with the encryption sent as a `data=` query param.
+3. <mark style="color:green;">\[dapp]:</mark> Upon receiving the deeplink response, dapps should decrypt the object in the `data=` query param to view the signature.
+
+### Encryption Resources
+
+To learn more about encryption and decryption, please refer to the following libraries:
+
+#### JavaScript
+
+* [TweetNaCl.js](https://github.com/dchest/tweetnacl-js)
+
+#### iOS
+
+* [TweetNaCl SwiftWrap](https://github.com/bitmark-inc/tweetnacl-swiftwrap)
+
+#### Android
+
+* [Tink](https://github.com/google/tink)
+* [TweetNaCl Java](https://github.com/InstantWebP2P/tweetnacl-java)
+
+
+
+================================================
+FILE: documentation/phantom-wallet/deeplinks/handling-sessions.md
+================================================
+# Handling Sessions
+
+When a user [connects to Phantom](provider-methods/connect.md) for the first time, Phantom will return a `session` param that represents the user's connection. The app should pass this `session` param back to Phantom on all subsequent [Provider Methods](provider-methods/). It is the app's responsibility to store this `session`.
+
+Sessions do not expire. Once a user has connected with Phantom, the corresponding app can indefinitely make requests such as [SignAndSendTransaction](provider-methods/signandsendtransaction.md) and [SignMessage](provider-methods/signmessage.md) without prompting the user to re-connect with Phantom. Apps will still need to re-connect to Phantom after a [Disconnect](provider-methods/disconnect.md) event or an [Invalid Session](handling-sessions.md#invalid-sessions).
+
+### Session Structure
+
+The entire `session` param is encoded in base58. A `session` should contain the following data:
+
+* **JSON Data Signature**: A base58 signature of the JSON data that is 64 bytes. Phantom will check the signature against the actual message that was signed.
+* **JSON Data**: A JSON object with the following fields:
+  * `app_url` (string): A url used to fetch app metadata (i.e. title, icon) using the same properties found in [Displaying Your App](../best-practices/displaying-your-app.md).
+  * `timestamp` (number): The timestamp at which the user approved the connection. At the time of this writing, sessions do not expire.
+  * `chain` (string): The chain that the user connected to at the start of the session. Sessions cannot be used across two different chains with the same keypair (e.g. the user cannot connect to Solana and then sign on Ethereum). At the time of this writing, Phantom only supports `solana`.
+  * `cluster` (string) (optional): The approved cluster that the app and user initially connected to. Solana-only. Can be either: `mainnet-beta`, `testnet`, or `devnet`. Defaults to `mainnet-beta`.
+
+### Decoding Sessions
+
+Phantom will decode and validate the `session` param on every request. To decode the session, we decode it with `bs58`, slice off the first 64 bytes of the signature, and the treat the rest as JSON data. We then sign the JSON data again with the same keypair and compare that signature against the signature in the session. If the signatures are the same, the session is valid. Otherwise, we conclude that the session has been faked, as the signature does not belong to the keypair it claims it does.
+
+{% hint style="info" %}
+Calling `nacl.sign.open` conveniently verifies and returns the original object. For more information, please review [Encryption Resources](encryption.md#encryption-resources).
+{% endhint %}
+
+After we determine that the session is valid, we still need to ensure that the JSON fields line up with what we expect. An app could give a session for `pubkey A` when the user is currently using `pubkey B` in Phantom. In such a scenario, that session should not allow an app to request signatures. Instead, the app must issue a new connect request or use the correct session.
+
+```javascript
+// Encoding a session
+const privateKey = ...;
+const sessionData = JSON.stringify({
+  "app_id": "APP_ID",
+  "chain": "CHAIN",
+  "cluster": "CLUSTER",
+  "timestamp": 1644954984,
+});
+const bytes = Buffer.from(sessionData, "utf-8");
+
+// tweetnacl-js formats signature in format <signature><sessionData>
+const signature = bs58.encode(nacl.sign(bytes, privateKey));
+
+// Decoding ja session
+const publicKey = ...;
+const verifiedSessionData = nacl.sign.open(bs58.decode(signature), publicKey.toBytes());
+if (!verifiedSessionData) throw new Error(`This session was not signed by ${publicKey}`);
+```
+
+### Invalid Sessions
+
+While sessions do not expire, there are a number of reasons why a sessions could still be deemed invalid:
+
+1. It was not signed by the current wallet keypair. This could mean that the session is entirely fake, or that it was signed by another keypair in the user’s wallet.
+2.  It was signed by the current wallet keypair, but the session's JSON `data` does not pass muster. There are a few reasons why this might occur:
+
+    1. The user switched chains (or possibly networks).
+    2. The `app_url` could be blocked if malicious. See [Blocklist](../development-powertools/blocklist.md) for more information.
+
+
+
+
+================================================
+FILE: documentation/phantom-wallet/deeplinks/limitations.md
+================================================
+# Limitations
+
+### Android
+
+Android has a 500kb Transaction limit when passing data between services and apps. The requesting app may crash with a `TransactionTooLarge` exception when requesting a string >500kb (over 31k characters). This tends to happen with significantly large intents.
+
+### iOS
+
+iOS is not known to have a 500kb transaction and allows [transmissions up to 1 MB](https://github.com/zoul/ios-url-scheme-length-limit/blob/master/Transmitter/ViewController.swift).
+
+
+
+================================================
+FILE: documentation/phantom-wallet/deeplinks/specifying-redirects.md
+================================================
+# Specifying Redirects
+
+All [Methods](provider-methods/) support a `redirect_link=` param that lets Phantom know how to get back to the original app. The URI specified by this param should be URL encoded. The following is an example for a `mydapp://onPhantomConnected` redirect URI:
+
+```
+redirect_link%3Dmydapp%3A%2F%2FonPhantomConnected
+```
+
+If the deeplink request to Phantom comes with a response, Phantom will append the results as query parameters in the `redirect_link=` upon redirecting.
+
+```
+redirect_link=mydapp://onPhantomConnected?data=...
+```
+
+
+
+================================================
+FILE: documentation/phantom-wallet/deeplinks/other-methods/README.md
+================================================
+# Other Methods
+
+In addition to its [Provider Methods](../provider-methods/), Phantom also supports other methods that are accessible via deeplinks. Specifically, users can open web apps within Phantom's in-app browser via the [Browse](browse.md) deeplink.
+
+
+
+================================================
+FILE: documentation/phantom-wallet/deeplinks/other-methods/browse.md
+================================================
+# Browse
+
+Deeplinks provide a convenient way for users to open web apps within Phantom. Using their phone’s camera, users can scan a QR code to open a page directly within Phantom’s in-app browser. If a web app detects that a user is on mobile, it can also prompt the user to open a specific page within Phantom's in-app browser.
+
+The `browse` deeplink can be used before a [Connect](../provider-methods/connect.md) event takes places, as it does not require a `session` param. Please review [Extension & Mobile Browser](broken-reference) for more information on how apps can interact with Phantom from within the in-app browser.
+
+{% hint style="info" %}
+`browse` deeplinks are not intended to be pasted into mobile web browsers. These deeplinks must either be handled by an app or clicked on by an end user.
+{% endhint %}
+
+### URL Structure
+
+```
+https://phantom.app/ul/browse/<url>?ref=<ref>
+```
+
+### Parameters
+
+* `url` **(required)**: The URL that should open within Phantom's in-app browser, URL-encoded.
+* `ref` **(required)**: The URL of the requesting app, URL-encoded
+
+The following is an example request to open an [NFT listed on Magic Eden](https://magiceden.io/item-details/ED8Psf2Zk2HyVGAimSQpFHVDFRGDAkPjQhkfAqbN5h7d):
+
+```
+https://phantom.app/ul/browse/https%3A%2F%2Fmagiceden.io%2Fitem-details%2FED8Psf2Zk2HyVGAimSQpFHVDFRGDAkPjQhkfAqbN5h7d?ref=https%3A%2F%2Fmagiceden.io
+```
+
+Result: [browse deeplink to NFT listed on Magic Eden](https://phantom.app/ul/browse/https%3A%2F%2Fmagiceden.io%2Fitem-details%2FED8Psf2Zk2HyVGAimSQpFHVDFRGDAkPjQhkfAqbN5h7d?ref=https%3A%2F%2Fmagiceden.io)
+
+
+
+================================================
+FILE: documentation/phantom-wallet/deeplinks/provider-methods/README.md
+================================================
+# Provider Methods
+
+All provider methods follow a protocol format of:
+
+```
+https://phantom.app/ul/<version>/<method>
+```
+
+The following provider methods are accessible via deeplinks:
+
+{% content-ref url="connect.md" %}
+[connect.md](connect.md)
+{% endcontent-ref %}
+
+{% content-ref url="disconnect.md" %}
+[disconnect.md](disconnect.md)
+{% endcontent-ref %}
+
+{% content-ref url="signandsendtransaction.md" %}
+[signandsendtransaction.md](signandsendtransaction.md)
+{% endcontent-ref %}
+
+{% content-ref url="signalltransactions.md" %}
+[signalltransactions.md](signalltransactions.md)
+{% endcontent-ref %}
+
+{% content-ref url="signtransaction.md" %}
+[signtransaction.md](signtransaction.md)
+{% endcontent-ref %}
+
+{% content-ref url="signmessage.md" %}
+[signmessage.md](signmessage.md)
+{% endcontent-ref %}
+
+
+
+================================================
+FILE: documentation/phantom-wallet/deeplinks/provider-methods/connect.md
+================================================
+# Connect
+
+In order to start interacting with Phantom, an app must first establish a connection. This connection request will prompt the user for permission to share their public key, indicating that they are willing to interact further.
+
+Once a user connects to Phantom, Phantom will return a `session` param that should be used on all subsequent methods. For more information on sessions, please review [Handling Sessions](../handling-sessions.md).
+
+### Base URL
+
+```
+https://phantom.app/ul/v1/connect
+```
+
+### Query String Parameters
+
+* `app_url` **(required)**: A url used to fetch app metadata (i.e. title, icon) using the same properties found in [Displaying Your App](../../best-practices/displaying-your-app.md). URL-encoded.
+* `dapp_encryption_public_key` **(required)**: A public key used for end-to-end encryption. This will be used to generate a shared secret. For more information on how Phantom handles shared secrets, please review [Encryption](../encryption.md).&#x20;
+* `redirect_link` **(required)**: The URI where Phantom should redirect the user upon connection. Please review [Specifying Redirects](../specifying-redirects.md) for more details. URL-encoded.
+* `cluster` (optional): The network that should be used for subsequent interactions. Can be either: `mainnet-beta`, `testnet`, or `devnet`. Defaults to `mainnet-beta`.
+
+### Returns
+
+#### :white\_check\_mark: Approve
+
+* `phantom_encryption_public_key`: An encryption public key used by Phantom for the construction of a shared secret between the connecting app and Phantom, encoded in base58.
+* `nonce`: A nonce used for encrypting the response, encoded in base58.
+*   `data`: An encrypted JSON string. Refer to [Encryption](../encryption.md) to learn how apps can decrypt `data` using a shared secret. Encrypted bytes are encoded in base58.
+
+    ```json
+    // content of decrypted `data`-parameter
+    {
+      // base58 encoding of user public key
+      "public_key": "BSFtCudCd4pR4LSFqWPjbtXPKSNVbGkc35gRNdnqjMCU",
+
+      // session token for subsequent signatures and messages
+      // dapps should send this with any other deeplinks after connect
+      "session": "..."
+    }
+    ```
+
+    * `public_key`: The public key of the user, represented as a base58-encoded string.
+    * `session`: A string encoded in base58. This should be treated as opaque by the connecting app, as it only needs to be passed alongside other parameters. Sessions do not expire. For more information on sessions, please review [Handling Sessions](../handling-sessions.md).
+
+#### :x:Reject
+
+An `errorCode` and `errorMessage` as query parameters. Please refer to [Errors](../../getting-started-with-solana/errors.md) for a full list of possible error codes.
+
+```
+{
+  "errorCode": "...",
+  "errorMessage": "..."
+}
+```
+
+### Example
+
+Please refer to the [`connect` method implemented in our React Native demo application](https://github.com/phantom-labs/deep-link-demo-app/blob/20f19f2154e98699f0d5a6b28bc4bb3d5acbcefd/App.tsx#L175).
+
+
+
+================================================
+FILE: documentation/phantom-wallet/deeplinks/provider-methods/disconnect.md
+================================================
+# Disconnect
+
+After an initial [Connect](connect.md) event has taken place, an app may disconnect from Phantom at anytime. Once disconnected, Phantom will reject all signature requests until another connection is established.
+
+### Base URL
+
+```
+https://phantom.app/ul/v1/disconnect
+```
+
+### Query String Parameters
+
+* `dapp_encryption_public_key` **(required)**: The original encryption public key used from the app side for an existing [Connect](connect.md) session.
+* `nonce` **(required)**: A nonce used for encrypting the request, encoded in base58.
+* `redirect_link` **(required)**: The URI where Phantom should redirect the user upon completion. Please review [Specifying Redirects](../specifying-redirects.md) for more details. URL-encoded.
+*   `payload` **(required)**: An encrypted JSON string with the following fields:
+
+    ```json
+    {
+        "session": "...", // token received from the connect method
+    }
+    ```
+
+    * `session` **(required)**: The session token received from the [Connect](connect.md) method. Please see [Handling Sessions](../handling-sessions.md) for more details.
+
+### Returns
+
+#### :white\_check\_mark: Approve
+
+No query params returned.
+
+#### :x:Reject
+
+An `errorCode` and `errorMessage` as query parameters. Please refer to [Errors](../../getting-started-with-solana/errors.md) for a full list of possible error codes.
+
+```
+{
+  "errorCode": "...",
+  "errorMessage": "..."
+}
+```
+
+### Example
+
+Please refer to the [`disconnect` method implemented in our React Native demo application](https://github.com/phantom-labs/deep-link-demo-app/blob/20f19f2154e98699f0d5a6b28bc4bb3d5acbcefd/App.tsx#L187).
+
+
+
+================================================
+FILE: documentation/phantom-wallet/deeplinks/provider-methods/signalltransactions.md
+================================================
+# SignAllTransactions
+
+Once an app is connected, it is also possible to sign multiple transactions at once. Unlike [SignAndSendTransaction](signandsendtransaction.md), Phantom will not submit these transactions to the network. Applications can submit signed transactions using [web3.js's `sendRawTransaction`](https://solana-labs.github.io/solana-web3.js/classes/Connection.html#sendRawTransaction).&#x20;
+
+### Base URL
+
+```
+https://phantom.app/ul/v1/signAllTransactions
+```
+
+### Query String Parameters
+
+* `dapp_encryption_public_key` **(required)**: The original encryption public key used from the app side for an existing [Connect](connect.md) session.
+* `nonce` **(required)**: A nonce used for encrypting the request, encoded in base58.
+* `redirect_link` **(required)**: The URI where Phantom should redirect the user upon completion. Please review [Specifying Redirects](../specifying-redirects.md) for more details. URL-encoded.
+*   `payload` **(required)**: An encrypted JSON string with the following fields:
+
+    ```json
+    {
+      "transactions": [
+        "...", // serialized transaction, bs58-encoded
+        "...", // serialized transaction, bs58-encoded
+      ],
+      "session": "...", // token received from connect-method
+    }
+    ```
+
+    * `transactions` **(required)**: An array of [transactions](https://solana-labs.github.io/solana-web3.js/classes/Transaction.html) that Phantom will sign, serialized and encoded in base58.
+    * `session` **(required)**: The session token received from the [Connect](connect.md) method. Please see [Handling Sessions](../handling-sessions.md) for more details.
+
+### Returns
+
+#### :white\_check\_mark: Approve
+
+* `nonce`: A nonce used for encrypting the response, encoded in base58.
+*   `data`: An encrypted JSON string. Refer to [Encryption](../encryption.md) to learn how apps can decrypt `data` using a shared secret. Encrypted bytes are encoded in base58.
+
+    ```json
+    // content of decrypted `data`-parameter
+    {
+        transactions: [
+            "...", // signed serialized transaction, bs58-encoded
+            "...", // signed serialized transaction, bs58-encoded
+        ] 
+    }
+    ```
+
+    * `transactions`: An array of signed, serialized transactions that are base58 encoded. Phantom will not submit these transactions. Applications can submit these transactions themselves via [web3.js's `sendRawTransaction`](https://solana-labs.github.io/solana-web3.js/classes/Connection.html#sendRawTransaction).&#x20;
+
+#### :x:Reject
+
+An `errorCode` and `errorMessage` as query parameters. Please refer to [Errors](../../getting-started-with-solana/errors.md) for a full list of possible error codes.
+
+```
+{
+  "errorCode": "...",
+  "errorMessage": "..."
+}
+```
+
+### Example
+
+Please refer to the [`signAllTransactions` method implemented in our React Native demo application](https://github.com/phantom-labs/deep-link-demo-app/blob/20f19f2154e98699f0d5a6b28bc4bb3d5acbcefd/App.tsx#L229).
+
+
+
+================================================
+FILE: documentation/phantom-wallet/deeplinks/provider-methods/signandsendtransaction.md
+================================================
+# SignAndSendTransaction
+
+Once an application is connected to Phantom, it can prompt the user for permission to send transactions on their behalf.
+
+In order to send a transaction, an application must:
+
+1. Create an unsigned transaction.
+2. Have the transaction be signed and submitted to the network by the user's Phantom wallet.
+3. Optionally await network confirmation using a Solana JSON RPC connection.
+
+{% hint style="info" %}
+For more information about the nature of Solana transactions, please review the [`solana-web3.js` docs](https://solana-labs.github.io/solana-web3.js/) as well as the [Solana Cookbook](https://solanacookbook.com/core-concepts/transactions.html#transactions).
+{% endhint %}
+
+For a sample transaction using Phantom deeplinks, check out our [deeplinking demo app](../../resources/sandbox.md#deeplinking-demo-app).
+
+### Base URL
+
+```
+https://phantom.app/ul/v1/signAndSendTransaction
+```
+
+### Query String Parameters
+
+* `dapp_encryption_public_key` **(required)**: The original encryption public key used from the app side for an existing [Connect](connect.md) session.
+* `nonce` **(required)**: A nonce used for encrypting the request, encoded in base58.
+* `redirect_link` **(required)**: The URI where Phantom should redirect the user upon completion. Please review [Specifying Redirects](../specifying-redirects.md) for more details. URL-encoded.
+*   `payload` **(required)**: An encrypted JSON string with the following fields:
+
+    ```json
+    {
+      "transaction": "...", // serialized transaction, base58-encoded
+      "sendOptions": "..." // an optional Solana web3.js sendOptions object
+      "session": "...", // token received from the connect method
+    }
+    ```
+
+    * `transaction` **(required)**: The [transaction](https://solana-labs.github.io/solana-web3.js/classes/Transaction.html) that Phantom will sign and submit, serialized and encoded in base58.
+    * `sendOptions` (optional): An optional object that specifies options for how Phantom should submit the transaction. This object is [defined in Solana web3.js](https://solana-labs.github.io/solana-web3.js/modules.html#SendOptions).
+    * `session` **(required)**: The session token received from the [Connect](connect.md) method. Please see [Handling Sessions](../handling-sessions.md) for more details.
+
+### Returns
+
+#### :white\_check\_mark: Approve
+
+* `nonce`: A nonce used for encrypting the response, encoded in base58.
+*   `data`: An encrypted JSON string. Refer to [Encryption](../encryption.md) to learn how apps can decrypt `data` using a shared secret. Encrypted bytes are encoded in base58.
+
+    ```json
+    // content of decrypted `data`-parameter
+    {
+      "signature": "..." // transaction-signature
+    }
+    ```
+
+    * `signature`: The first signature in the transaction, which can be used as its [transaction id](https://docs.solana.com/terminology#transaction-id).
+
+#### :x:Reject
+
+An `errorCode` and `errorMessage` as query parameters. Please refer to [Errors](../../getting-started-with-solana/errors.md) for a full list of possible error codes.
+
+```
+{
+  "errorCode": "...",
+  "errorMessage": "..."
+}
+```
+
+### Example
+
+Please refer to the [`signAndSendTransaction` method implemented in our React Native demo application](https://github.com/phantom-labs/deep-link-demo-app/blob/20f19f2154e98699f0d5a6b28bc4bb3d5acbcefd/App.tsx#L204).
+
+
+
+================================================
+FILE: documentation/phantom-wallet/deeplinks/provider-methods/signmessage.md
+================================================
+# SignMessage
+
+Once it's connected to Phantom, an app can request that the user signs a given message. Applications are free to write their own messages which will be displayed to users from within Phantom's signature prompt. Message signatures do not involve network fees and are a convenient way for apps to verify ownership of an address.
+
+In order to send a message for the user to sign, an application must:&#x20;
+
+1. Provide a **hex** or **UTF-8** encoded string as a Uint8Array and then **base58-encoded it**.
+2. Request that the encoded message is signed via the user's Phantom wallet.
+
+The [deeplinking demo app](../../resources/sandbox.md#deeplinking-demo-app) provides an example of signing a message.
+
+{% hint style="info" %}
+For more information on how to verify the signature of a message, please refer to [Encryption Resources](../encryption.md#encryption-resources).
+{% endhint %}
+
+### Base URL
+
+```
+https://phantom.app/ul/v1/signMessage
+```
+
+### Query String Parameters
+
+* `dapp_encryption_public_key` **(required)**: The original encryption public key used from the app side for an existing [Connect](connect.md) session.
+* `nonce` **(required)**: A nonce used for encrypting the request, encoded in base58.
+* `redirect_link` **(required)**: The URI where Phantom should redirect the user upon completion. Please review [Specifying Redirects](../specifying-redirects.md) for more details. URL-encoded.
+*   `payload` **(required)**: An encrypted JSON string with the following fields:
+
+    ```json
+    {
+      "message": "...", // the message, base58 encoded
+      "session": "...", // token received from connect-method
+      "display": "utf8" | "hex", // the encoding to use when displaying the message 
+    }
+    ```
+
+    * `message` **(required)**: The message that should be signed by the user, encoded in base58. Phantom will display this message to the user when they are prompted to sign.
+    * `session` **(required)**: The session token received from the [Connect](connect.md) method. Please see [Handling Sessions](../handling-sessions.md) for more details.
+    * `display` **(optional)**: How you want us to display the string to the user. Defaults to `utf8`
+
+### Returns
+
+#### :white\_check\_mark: Approve
+
+* `nonce`: A nonce used for encrypting the response, encoded in base58.
+*   `data`: An encrypted JSON string. Refer to [Encryption](../encryption.md) to learn how apps can decrypt `data` using a shared secret. Encrypted bytes are encoded in base58.
+
+    ```json
+    // content of decrypted `data`-parameter
+    {
+        signature: "...", // message-signature
+    }
+    ```
+
+    * `signature`: The message signature, encoded in base58. For more information on how to verify the signature of a message, please refer to [Encryption Resources](../encryption.md#encryption-resources).
+
+#### :x:Reject
+
+An `errorCode` and `errorMessage` as query parameters. Please refer to [Errors](../../getting-started-with-solana/errors.md) for a full list of possible error codes.
+
+```
+{
+  "errorCode": "...",
+  "errorMessage": "..."
+}
+```
+
+### Example
+
+Please refer to the [`signMessage` method implemented in our React Native demo application](https://github.com/phantom-labs/deep-link-demo-app/blob/20f19f2154e98699f0d5a6b28bc4bb3d5acbcefd/App.tsx#L290).
+
+
+
+================================================
+FILE: documentation/phantom-wallet/deeplinks/provider-methods/signtransaction.md
+================================================
+# SignTransaction
+
+The **easiest** and **most recommended** way to send a transaction is via [SignAndSendTransaction](signandsendtransaction.md). It is safer for users, and a simpler API for developers, for Phantom to submit the transaction immediately after signing it instead of relying on the application to do so.
+
+However, it is also possible for an app to request just the signature from Phantom. Once signed, an app can submit the transaction itself using [web3.js's `sendRawTransaction`](https://solana-labs.github.io/solana-web3.js/classes/Connection.html#sendRawTransaction).&#x20;
+
+### Base URL
+
+```
+https://phantom.app/ul/v1/signTransaction
+```
+
+### Query String Parameters
+
+* `dapp_encryption_public_key` **(required)**: The original encryption public key used from the app side for an existing [Connect](connect.md) session.
+* `nonce` **(required)**: A nonce used for encrypting the request, encoded in base58.
+* `redirect_link` **(required)**: The URI where Phantom should redirect the user upon completion. Please review [Specifying Redirects](../specifying-redirects.md) for more details. URL-encoded.
+*   `payload` **(required)**: An encrypted JSON string with the following fields:
+
+    ```json
+    {
+      "transaction": "...", // serialized transaction, base58 encoded
+      "session": "...", // token received from connect-method
+    }
+    ```
+
+    * `transaction` **(required)**: The [transaction](https://solana-labs.github.io/solana-web3.js/classes/Transaction.html) that Phantom will sign, serialized and encoded in base58.
+    * `session` **(required)**: The session token received from the [Connect](connect.md) method. Please see [Handling Sessions](../handling-sessions.md) for more details.
+
+### Returns
+
+#### :white\_check\_mark: Approve
+
+* `nonce`: A nonce used for encrypting the response, encoded in base58.
+*   `data`: An encrypted JSON string. Refer to [Encryption](../encryption.md) to learn how apps can decrypt `data` using a shared secret. Encrypted bytes are encoded in base58.
+
+    ```json
+    // content of decrypted `data`-parameter
+    {
+        transaction: "...", // signed serialized transaction, base58 encoded
+    }
+    ```
+
+    * `transaction`: The signed, serialized transaction that is base58 encoded. Phantom will not submit this transactions. An application can submit this transactions itself via [web3.js's sendRawTransaction](https://solana-labs.github.io/solana-web3.js/classes/Connection.html#sendRawTransaction).
+
+#### :x:Reject
+
+An `errorCode` and `errorMessage` as query parameters. Please refer to [Errors](../../getting-started-with-solana/errors.md) for a full list of possible error codes.
+
+```
+{
+  "errorCode": "...",
+  "errorMessage": "..."
+}
+```
+
+### Example
+
+Please refer to the [`signTransaction` method implemented in our React Native demo application](https://github.com/phantom-labs/deep-link-demo-app/blob/20f19f2154e98699f0d5a6b28bc4bb3d5acbcefd/App.tsx#L262).
+
+
+
+================================================
+FILE: documentation/phantom-wallet/development-powertools/blocklist.md
+================================================
+# Phantom Blocklist
+
+Phantom hosts a community-maintained repository of malicious websites that target Solana users. If a user navigates to a site that has been deemed malicious, Phantom will redirect them to the Phantom Blocklist Page and and warn them of any suspicious connection requests. The list of these malicious sites is available on [GitHub](https://github.com/phantom-labs/blocklist) and is open to [community contributions](https://github.com/phantom-labs/blocklist#contributing).
+
+![The Phantom Blocklist Page](<../.gitbook/assets/image (1) (1).png>)
+
+
+
+================================================
+FILE: documentation/phantom-wallet/development-powertools/mobile-web-debugging.md
+================================================
+
+### Mobile Web Debugging
+
+<figure><img src="../.gitbook/assets/Developer Settings.png" alt=""><figcaption></figcaption></figure>
+
+Developers can debug their mobile web dapps using PC browsers. To enable this in Phantom mobile go to Settings -> Developer Settings and toggle Web View Debugging on. Then follow the steps below for your platform.
+
+## iOS
+1. Tether your iPhone to your computer via USB
+2. On your iPhone go to Settings -> Safari -> Advanced and enable "Web Inspector" 
+3. On your computer open Safari, then from the menu bar Safari -> Settings -> Advanced tab -> enable "Show features for web developers"
+4. Open your web dapp in Phantom on your tethered device
+5. Back on your computer from the Safari menu bar go to Develop -> and Select your Device and Dapp name in Phantom.
+
+## Android
+1. Tether your Android phone to your computer via USB 
+2. Open your web dapp in Phantom on your tethered device
+3. On your computer open chrome://inspect/#devices on Chrome
+4. Select your device on the left and select "Inspect" on the Phantom dapp contents you'd like to inspect
+
+See the [React Native Webview Docs](https://github.com/react-native-webview/react-native-webview/blob/master/docs/Debugging.md#debugging-webview-contents) for more info.
+
+
+================================================
+FILE: documentation/phantom-wallet/development-powertools/signing-a-message.md
+================================================
+# Sign-In-With (SIW) Standard
+
+Applications that rely on `signMessage` for authenticating users can choose to opt-in to one of the various Sign In With (SIW) standards. If a message follows one of the supported standards, Phantom will verify required fields at the time of signing.&#x20;
+
+At the time of this writing, Phantom supports:
+
+* **Sign In With X** ([CAIP-122](https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-122.md))
+* **Sign In With Ethereum** ([EIP-4361](https://eips.ethereum.org/EIPS/eip-4361))
+* **Sign In With Solana** ([EIP-4361](https://eips.ethereum.org/EIPS/eip-4361) with Solana `address` & `chain-id` grammar)
+
+The serialized format of SIW messages is as follows:
+
+```
+${domain} wants you to sign in with your ${blockchain} account:
+${address}
+
+${statement}
+
+URI: ${uri}
+Version: ${version}
+Chain ID: ${chain-id}
+Nonce: ${nonce}
+Issued At: ${issued-at}
+Expiration Time: ${expiration-time}
+Not Before: ${not-before}
+Request ID: ${request-id}
+Resources:
+- ${resources[0]}
+- ${resources[1]}
+...
+- ${resources[n]}
+```
+
+<table><thead><tr><th>Name</th><th>Type</th><th data-type="checkbox">Required?</th><th>Description</th></tr></thead><tbody><tr><td><code>domain</code></td><td><code>string</code></td><td>true</td><td>The authority that is requesting the signing.</td></tr><tr><td><code>address</code></td><td><code>string</code></td><td>true</td><td>The blockchain address that is performing the signing.</td></tr><tr><td><code>statement</code></td><td><code>string</code></td><td>false</td><td>A human-readable ASCII assertion that the user will sign. It <em>MUST NOT</em> contain <code>\n</code>.</td></tr><tr><td><code>uri</code></td><td><code>string</code></td><td>true</td><td>A URI referring to the resource that is the subject of the signing (i.e. the subject of the claim).</td></tr><tr><td><code>version</code></td><td><code>string</code></td><td>true</td><td>The current version of the message.</td></tr><tr><td><code>chain-id</code></td><td><code>string</code></td><td>true</td><td>The Chain ID to which the session is bound, and the network where Contract Accounts MUST be resolved.</td></tr><tr><td><code>nonce</code></td><td><code>string</code></td><td>true</td><td>A randomized token to prevent signature replay attacks.</td></tr><tr><td><code>issued-at</code></td><td><code>string</code></td><td>true</td><td>The issuance time.</td></tr><tr><td><code>expiration-time</code></td><td><code>string</code></td><td>false</td><td>The time at which the signed authentication message is no longer valid.</td></tr><tr><td><code>not-before</code></td><td><code>string</code></td><td>false</td><td>The time at which the signed authentication message starts being valid.</td></tr><tr><td><code>request-id</code></td><td><code>string</code></td><td>false</td><td>A system-specific identifier used to uniquely refer to the authentication request.</td></tr><tr><td><code>resources</code></td><td><code>string[]</code></td><td>false</td><td>A list of uris the user wishes to have resolved as part of the authentication by the relying party.</td></tr></tbody></table>
+
+### Sign In With X
+
+The Sign In With X standard is defined by [CAIP-122](https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-122.md). It uses [CAIP-10](https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-10.md) identifiers for the `address` field and [CAIP-2](https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-2.md) for `chain-id`.
+
+{% hint style="info" %}
+While CAIP-122 is technically chain-agnostic, only Ethereum and Solana parsing are supported at this time.
+{% endhint %}
+
+#### Ethereum Example
+
+{% tabs %}
+{% tab title="signMessage()" %}
+```javascript
+const provider = getProvider(); // see "Detecting the Provider"
+const message = `magiceden.io wants you to sign in with your Ethereum account:
+eip155:1:0xb9c5714089478a327f09197987f16f9e5d936e8a
+
+Click Sign or Approve only means you have proved this wallet is owned by you.
+
+URI: https://magiceden.io
+Version: 1
+Chain ID: eip155:1
+Nonce: bZQJ0SL6gJ
+Issued At: 2022-10-25T16:52:02.748Z
+Resources:
+- https://foo.com
+- https://bar.com`;
+const encodedMessage = new TextEncoder().encode(message);
+const signedMessage = await provider.signMessage(encodedMessage, "utf8");java
+```
+{% endtab %}
+
+{% tab title="request()" %}
+```javascript
+const provider = getProvider(); // see "Detecting the Provider"
+const message = `magiceden.io wants you to sign in with your Ethereum account:
+eip155:1:0xb9c5714089478a327f09197987f16f9e5d936e8a
+
+Click Sign or Approve only means you have proved this wallet is owned by you.
+
+URI: https://magiceden.io
+Version: 1
+Chain ID: eip155:1
+Nonce: bZQJ0SL6gJ
+Issued At: 2022-10-25T16:52:02.748Z
+Resources:
+- https://foo.com
+- https://bar.com`;
+const encodedMessage = new TextEncoder().encode(message);
+const signedMessage = await provider.request({
+    method: "signMessage",
+    params: {
+         message: encodedMessage,
+         display: "utf8",
+    
+});
+```
+{% endtab %}
+{% endtabs %}
+
+#### Solana Example
+
+{% tabs %}
+{% tab title="signMessage()" %}
+```javascript
+const provider = getProvider(); // see "Detecting the Provider"
+const message = `magiceden.io wants you to sign in with your Solana account:
+solana:mainnet:FYpB58cLw5cwiN763ayB2sFT8HLF2MRUBbbyRgHYiRpK
+
+Click Sign or Approve only means you have proved this wallet is owned by you.
+
+URI: https://magiceden.io
+Version: 1
+Chain ID: solana:mainnet
+Nonce: bZQJ0SL6gJ
+Issued At: 2022-10-25T16:52:02.748Z
+Resources:
+- https://foo.com
+- https://bar.com`;
+const encodedMessage = new TextEncoder().encode(message);
+const signedMessage = await provider.signMessage(encodedMessage, "utf8");
+```
+{% endtab %}
+
+{% tab title="request()" %}
+```javascript
+const provider = getProvider(); // see "Detecting the Provider"
+const message = `magiceden.io wants you to sign in with your Solana account:
+solana:mainnet:FYpB58cLw5cwiN763ayB2sFT8HLF2MRUBbbyRgHYiRpK
+
+Click Sign or Approve only means you have proved this wallet is owned by you.
+
+URI: https://magiceden.io
+Version: 1
+Chain ID: solana:mainnet
+Nonce: bZQJ0SL6gJ
+Issued At: 2022-10-25T16:52:02.748Z
+Resources:
+- https://foo.com
+- https://bar.com`;
+const encodedMessage = new TextEncoder().encode(message);
+const signedMessage = await provider.request({
+    method: "signMessage",
+    params
+         message: encodedMessage,
+         display: "utf8",
+    
+});
+```
+{% endtab %}
+{% endtabs %}
+
+### Sign In With Ethereum
+
+The Sign In With Ethereum standard is defined by [EIP-4361](https://eips.ethereum.org/EIPS/eip-4361).
+
+#### Example
+
+{% tabs %}
+{% tab title="signMessage()" %}
+```javascript
+const provider = getProvider(); // see "Detecting the Provider"
+const message = `magiceden.io wants you to sign in with your Ethereum account:
+0xb9c5714089478a327f09197987f16f9e5d936e8a
+
+Click Sign or Approve only means you have proved this wallet is owned by you.
+
+URI: https://magiceden.io
+Version: 1
+Chain ID: 1
+Nonce: bZQJ0SL6gJ
+Issued At: 2022-10-25T16:52:02.748Z
+Resources:
+- https://foo.com
+- https://bar.com`;
+const encodedMessage = new TextEncoder().encode(message);
+const signedMessage = await provider.signMessage(encodedMessage, "utf8");
+```
+{% endtab %}
+
+{% tab title="request()" %}
+```javascript
+const provider = getProvider(); // see "Detecting the Provider"
+const message = `magiceden.io wants you to sign in with your Ethereum account:
+0xb9c5714089478a327f09197987f16f9e5d936e8a
+
+Click Sign or Approve only means you have proved this wallet is owned by you.
+
+URI: https://magiceden.io
+Version: 1
+Chain ID: 1
+Nonce: bZQJ0SL6gJ
+Issued At: 2022-10-25T16:52:02.748Z
+Resources:
+- https://foo.com
+- https://bar.com`;
+const encodedMessage = new TextEncoder().encode(message);
+const signedMessage = await provider.request({
+    method: "signMessage",
+    params
+         message: encodedMessage,
+         display: "utf8",
+    
+});
+```
+{% endtab %}
+{% endtabs %}
+
+### Sign In With Solana
+
+Sign In With Solana is an informal extension of [EIP-4361](https://eips.ethereum.org/EIPS/eip-4361) with Solana `address` and `chain-id` grammar.
+
+#### Example
+
+{% tabs %}
+{% tab title="signMessage()" %}
+```javascript
+const provider = getProvider(); // see "Detecting the Provider"
+const message = `magiceden.io wants you to sign in with your Solana account:
+FYpB58cLw5cwiN763ayB2sFT8HLF2MRUBbbyRgHYiRpK
+
+Click Sign or Approve only means you have proved this wallet is owned by you.
+
+URI: https://magiceden.io
+Version: 1
+Chain ID: mainnet
+Nonce: bZQJ0SL6gJ
+Issued At: 2022-10-25T16:52:02.748Z
+Resources:
+- https://foo.com
+- https://bar.com`;
+const encodedMessage = new TextEncoder().encode(message);
+const signedMessage = await provider.signMessage(encodedMessage, "utf8");
+```
+{% endtab %}
+
+{% tab title="request()" %}
+```javascript
+const provider = getProvider(); // see "Detecting the Provider"
+const message = `magiceden.io wants you to sign in with your Solana account:
+FYpB58cLw5cwiN763ayB2sFT8HLF2MRUBbbyRgHYiRpK
+
+Click Sign or Approve only means you have proved this wallet is owned by you.
+
+URI: https://magiceden.io
+Version: 1
+Chain ID: mainnet
+Nonce: bZQJ0SL6gJ
+Issued At: 2022-10-25T16:52:02.748Z
+Resources:
+- https://foo.com
+- https://bar.com`;
+const encodedMessage = new TextEncoder().encode(message);
+const signedMessage = await provider.request({
+    method: "signMessage",
+    params
+         message: encodedMessage,
+         display: "utf8",
+    
+});
+```
+{% endtab %}
+{% endtabs %}
+
+
+
+================================================
+FILE: documentation/phantom-wallet/development-powertools/solana-priority-fees.md
+================================================
+# Solana Priority Fees
+
+### Introduction
+
+Phantom automatically calculates and applies [Priority Fees](https://docs.solana.com/proposals/fee\_transaction\_priority) to all Phantom-generated transactions and dApp-generated transactions that meet [our requirements](solana-priority-fees.md#how-phantom-applies-priority-fees-to-dapp-transactions).
+
+### How Transaction Fees Work on Solana
+
+Solana transactions fees are calculated based on two main parts:
+
+• A statically set base fee per signature, and
+
+• The computational resources used during the transaction, measured in **Compute Units **_****_** (CU)**
+
+Since each transaction requires different computational resources, they are allotted a maximum number of compute units, known as the Compute Budget. After the Compute Budget is exhausted, the runtime halts the transaction and returns an error, resulting in a failed transaction.
+
+The maximum budget for a transaction is 1.4 million CU, while the total blockspace limit is 48 million CU. Only a few computationally heavy TXs, like a mint or a swap, could fill the entire block, halting other TXs—Hence the need for **Priority Fees**.
+
+The fee priority of a transaction `T` can be defined as `F(T)`, where `F(T)` is the _"fee-per compute-unit"_, calculated by:
+
+$$
+(additional\_fee + base\_fee)\  /\  requested\_compute\_units
+$$
+
+This means that the more compute units a transaction requests, the more additional fee it will have to pay to maintain the priority in the transaction queue. This prevents computationally heavy transactions from being easily spammed or from filling blocks.
+
+### Priority Fees Calculation
+
+Priority fees are calculated as,
+
+$$
+priority\_fees\ =\ compute\_budget\ *\ compute\_unit\_price
+$$
+
+where,
+
+$$
+compute\_budget\ =\ \#\ of\ instructions\ *\ compute\_unit\_limit
+$$
+
+### How Phantom Applies Priority Fees to dApp Transactions
+
+Although dApps can set their own [priority fees on transactions](https://solanacookbook.com/references/basic-transactions.html#how-to-change-compute-budget-fee-priority-for-a-transaction) they generate, we highly discourage doing so as it often surfaces unnecessary complexity to end-users. Instead, we recommend that dApp developers let Phantom apply priority fees on the user's behalf.
+
+Phantom will calculate and apply Priority Fees to all dApp-generated transactions, provided:
+
+• The transaction(s) do not already have signature(s) present
+
+• The transaction(s) do not have existing priority fee instructions (`computeUnitBudget` or `computeUnitLimit`)
+
+• After enhancing transaction(s) with Priority Fees, the size of each transaction will still be less than the byte size limit (1232 bytes)
+
+If all of the above conditions are met, Phantom will automatically calculate and apply priority fees at the time of signing. This pattern applies to all Phantom provider methods (`signAndSendTransaction`, `signTransaction` , `signAllTransactions`) across all environments (extension, mobile in-app browser, deeplinks, mobile wallet adapter).
+
+### Further Reading
+
+{% embed url="https://docs.solana.com/proposals/fee_transaction_priority" %}
+
+{% embed url="https://solanacookbook.com/references/basic-transactions.html#how-to-change-compute-budget-fee-priority-for-a-transaction" %}
+
+{% embed url="https://docs.solana.com/developing/programming-model/runtime#prioritization-fees" %}
+
+{% embed url="https://docs.solana.com/transaction_fees#prioritization-fee" %}
+
+
+
+================================================
+FILE: documentation/phantom-wallet/development-powertools/solana-versioned-transactions.md
+================================================
+# Solana Versioned Transactions
+
+### Introduction
+
+Phantom now supports Versioned Transactions. Versioned Transactions and Address Lookup Tables (LUTs) were introduced by Solana in an effort to improve the developer and end-user experience tremendously. The proposed changes are as follows:
+
+1. Introduce a program which manages on-chain address lookup tables
+2. Add a new transaction format which can make use of the above on-chain address lookup tables
+
+Why do we need the above?
+
+Legacy transactions have a major issue: Maximum allowed size of 1232 bytes, and hence the number of accounts that can fit in an atomic transaction: 35 addresses.
+
+<figure><img src="../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+
+This is problematic as developers are limited with this threshold and are unable to include >35 signature-free account / program addresses in a single transaction. This is where Address Lookup Tables (LUT) come into the picture.
+
+
+
+### Address Lookup Tables (LUTs)
+
+The idea behind Address Lookup Tables is to store account addresses in array-like data structures on-chain. Once accounts are stored in this table, the address of the table can be referenced in a transaction message using 1-byte u8 indices.
+
+<figure><img src="../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+
+This opens up space as addresses need not be stored inside transaction messages, but only be referenced. This allows 2^8=256 accounts to be included in 1 tx, as accounts are referenced using u8 indices. Here's an example of its power:
+
+{% embed url="https://twitter.com/PierreArowana/status/1545186073034334208?s=20" %}
+
+### RPC Changes <a href="#heading-rpc-changes" id="heading-rpc-changes"></a>
+
+Transaction responses will require a new version field: `maxSupportedTransactionVersion` to indicate to clients which transaction structure needs to be followed for deserialisation.
+
+The following methods need to be updated to avoid errors:
+
+* `getTransaction`
+* `getBlock`
+
+The following parameter needs to be added to the requests:
+
+`maxSupportedTransactionVersion: 0`
+
+If `maxSupportedTransactionVersion` is not explicitly added to the request, the transaction version will fallback to `legacy`. Any block that contains a versioned transaction will return with an error by the client in the case of a legacy transaction.
+
+{% embed url="https://twitter.com/jacobvcreech/status/1551673297972101120?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E1551673302283960324%7Ctwgr%5E4eec7dc9ba28cb9513757c79cddba04e61854a74%7Ctwcon%5Es2_&ref_url=https%3A%2F%2Fanvit.hashnode.dev%2Fversioned-transactions" %}
+
+You can set this via JSON formatted requests to the RPC endpoint like below:
+
+```bash
+curl http://localhost:8899 -X POST -H "Content-Type: application/json" -d \
+'{"jsonrpc": "2.0", "id":1, "method": "getBlock", "params": [430, {
+  "encoding":"json",
+  "maxSupportedTransactionVersion":0,
+  "transactionDetails":"full",
+  "rewards":false
+}]}'
+
+```
+
+You can also do the same using the [`@solana/web3.js`](https://solana-labs.github.io/solana-web3.js/) library.
+
+```javascript
+// connect to the `devnet` cluster and get the current `slot`
+const connection = new web3.Connection(web3.clusterApiUrl("devnet"));
+const slot = await connection.getSlot();
+
+// get the latest block (allowing for v0 transactions)
+const block = await connection.getBlock(slot, {
+  maxSupportedTransactionVersion: 0,
+});
+
+// get a specific transaction (allowing for v0 transactions)
+const getTx = await connection.getTransaction(
+  "3jpoANiFeVGisWRY5UP648xRXs3iQasCHABPWRWnoEjeA93nc79WrnGgpgazjq4K9m8g2NJoyKoWBV1Kx5VmtwHQ",
+  {
+    maxSupportedTransactionVersion: 0,
+  },
+);
+```
+
+
+
+Check out how to build and send Versioned Transactions and Lookup Tables [on this page](../getting-started-with-solana/sending-a-transaction-1.md).
+
+
+
+### Further Reading
+
+{% embed url="https://beta.docs.solana.com/developing/versioned-transactions#how-create-a-versioned-transaction" %}
+
+{% embed url="https://beta.docs.solana.com/developing/lookup-tables#how-to-create-an-address-lookup-table" %}
+
+{% embed url="https://anvit.hashnode.dev/versioned-transactions" %}
+
+
+
+================================================
+FILE: documentation/phantom-wallet/development-powertools/solana-wallet-standard.md
+================================================
+# Solana Wallet Standard
+
+### Introduction
+
+Wallet-Standard is a chain-agnostic set of interfaces and conventions that seeks to improve wallets' user and developer experience.
+
+Let's understand the current state of wallets and the Solana wallet-adapter to understand the significance of Solana wallet standard.
+
+
+
+### Wallet-Adapter
+
+Today, most wallets on Solana are browser extensions. These extensions have extremely high privileges and talk to dApps by "injecting" code into every website the user visits.
+
+There are several issues with the way injection works today:
+
+* App devs need to plan what wallets they support, stick it in the dialog, and show buttons for each wallet
+* Mobile browsers don’t have browser extensions (Workaround: Wallet Web Browsers: bad UX)
+* Wallets attach to the window as global objects, and dapps need to be aware of where and how to find these objects
+* All wallets can attach to `window.solana`, and nothing is stopping other wallets from pretending to be Phantom by setting `isPhantom=true`
+* Wallets have different APIs: dapps need to know how to talk to specific wallets. These APIs can be divided into two behaviors:
+  * Standard behavior: current functionalities
+  * Custom behavior: possible, custom functionalities in the future\
+
+
+### Wallet-Standard
+
+What's the solution to the above?
+
+Fix the detection of wallets on the window:
+
+1. by standardizing the way wallets attach themselves to the window
+2. by defining a set of standard APIs that dApps can rely on
+
+Wallet Standard does exactly that! It:
+
+* defines how the wallet attaches to the window in a simple standard way
+* defines a part of the standard and custom behaviors (APIs)
+* does not kill WA, but makes it more flexible: and ultimately loads significantly less code upfront
+
+
+
+### Features of Wallet Standard
+
+#### Avoids code bloating
+
+If a dapp supports 20 wallets, it must load 5kb code per wallet (100k total). This bloating increases linearly as the number of wallets increase.
+
+\~95% of this code will go unused, as the user will only use 1 or 0 wallets
+
+<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+
+Wallet standard turns this inside out: If dapps want to support 100 wallets: just install wallet-standard. Any wallet that supports the language of the standard is supported. Implementations are replaced with Interfaces!
+
+<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+
+#### Eliminates Attack Surfaces
+
+Before wallet standard, every new wallet had to land a PR in the wallet-adapter.[@solana](https://twitter.com/solana)labs had to vet hundreds of PRs to ensure they weren't introducing malware into the adapter.
+
+Eliminate the plugins -> eliminate attack surfaces!
+
+<figure><img src="../.gitbook/assets/image (6).png" alt=""><figcaption></figcaption></figure>
+
+#### Multi-Chain Standard
+
+This is a Solana-first standard. But an active effort is being undertaken to fix these issues (which are very much present) on other chains like Sui Network and Ethereum.
+
+#### No web3.js dependency
+
+The interface in the standard will always input and output transactions, pubkeys, and signatures as raw bytes (`Uint8Array`). This is because some wallets do not use `web3.js` to minimize attack surface area.
+
+#### Sidesteps Wallet Browsers
+
+With Mobile Wallet Adapter already released on Android and soon to be released on IOS, it will soon be possible to surf dapps on native mobile browsers without breaking the flow to communicate with wallets.
+
+###
+
+### For Dapp developers
+
+Wallet standard will cover support for:
+
+1. signing one or more transactions
+2. signing and sending one or more transactions
+3. signing one or more "messages" (arbitrary byte arrays)
+4. encryption and decryption
+
+Try it in action here: [https://solana-labs.github.io/wallet-adapter/example/](https://solana-labs.github.io/wallet-adapter/example/)
+
+Just update to the latest wallet-adapter release, and you're automatically wallet-standard compatible!
+
+**IMPORTANT**: Make sure not to mutate transactions in place, or your dapp might break.
+
+{% embed url="https://twitter.com/0xprof_lupin/status/1613252832525955073" %}
+
+### Further Reading
+
+{% embed url="https://github.com/wallet-standard/wallet-standard/blob/master/DESIGN.md" %}
+
+
+
+================================================
+FILE: documentation/phantom-wallet/development-powertools/testnet-mode.md
+================================================
+### Testnet Mode
+
+<figure><img src="../.gitbook/assets/Developer Settings.png" alt=""><figcaption></figcaption></figure>
+
+
+Developers can access test networks via Settings -> Developer Settings in Phantom. The following testnets are available:
+
+* Solana
+  * Solana Localnet (browser extension only)
+  * Solana Testnet
+  * Solana Devnet
+* Ethereum and Polygon
+  * Ethereum Goerli
+  * Ethereum Sepolia
+  * Polygon Mumbai
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/detecting-the-provider.md
+================================================
+# Detecting the Provider
+
+To detect if a user has already installed Phantom, a web application should check for the existence of an `ethereum` object. Phantom's browser extension and mobile in-app browser will both inject an `ethereum` object into the [window](https://developer.mozilla.org/en-US/docs/Web/API/Window) of any web application the user visits, provided that site is using `https://`, on `localhost`, or is `127.0.0.1.` Phantom will not inject the provider into [iframes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe) or sites using `http://`.
+
+If the `ethereum` object exists, Ethereum dapps can interact with Phantom via the API found at `window.ethereum`. This object is also made available at `window.phantom` to prevent namespace collisions.&#x20;
+
+The code examples we will show use `window.phantom` as that is the most reliable way to work with Phantom. By interacting with `window.phantom`, you ensure that you don't accidentally call any other software that may be injecting into your browser.
+
+If you are set on using the `window.ethereum` API (the `window.phantom.ethereum` object is identical), you will need to check that Phantom is installed and injecting this `ethereum` object in your browser. To detect if Phantom is installed, an application should check for an additional `isPhantom` flag.
+
+```typescript
+const isPhantomInstalled = window?.ethereum?.isPhantom
+```
+
+If Phantom is not installed, we recommend you redirect your users to [our website](https://phantom.app/). Altogether, this may look like the following.
+
+{% tabs %}
+{% tab title="window.phantom" %}
+```typescript
+const getProvider = () => {
+  if ('phantom' in window) {
+    const anyWindow: any = window;
+    const provider = anyWindow.phantom?.ethereum;
+   
+    if (provider) {
+      return provider;
+    }
+  }
+
+  window.open('https://phantom.app/', '_blank');
+};
+```
+{% endtab %}
+
+{% tab title="window.ethereum" %}
+```typescript
+const getProvider = () => {
+  if ('ethereum' in window) {
+    const anyWindow: any = window;
+    const provider = anyWindow.ethereum;
+   
+    if (provider?.isPhantom) {
+      return provider;
+    }
+  }
+
+  window.open('https://phantom.app/', '_blank');
+};
+```
+{% endtab %}
+{% endtabs %}
+
+For an example of how a React application can detect Phantom, please refer to the [`getProvider` function in our sandbox](https://github.com/phantom-labs/eth\_sandbox/blob/main/src/utils/getProvider.ts).&#x20;
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/establishing-a-connection.md
+================================================
+# Establishing a Connection
+
+Once an application has [detected the provider](../getting-started-with-solana/detecting-the-provider.md), it can then request to connect to Phantom. This connection request will prompt the user for permission to share their public key, indicating that they are willing to interact further. Users must approve a connection request before the app can make additional requests such as [signing a message](signing-a-message.md) or [sending a transaction](sending-a-transaction.md).
+
+Once permission is established for the first time, the web application's domain will be whitelisted for future connection requests. After a connection is established, it is possible to terminate the connection from both the application and the user side.
+
+## Connecting
+
+The default way to connect to Phantom is by calling `window.ethereum.request` function.
+
+```javascript
+const provider = getProvider(); // see "Detecting the Provider"
+try {
+    const accounts = await provider.request({ method: "eth_requestAccounts" });
+    console.log(accounts[0]);
+    // 0x534583cd8cE0ac1af4Ce01Ae4f294d52b4Cd305F
+} catch (err) {
+    // { code: 4001, message: 'User rejected the request.' }
+}
+```
+
+The `eth_requestAccounts` method will return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/Promise). If it resolves, it is an array where the connected address is in the 0th index, and rejects (throw when awaited) when the user declines the request or closes the pop-up. See [Errors](../getting-started-with-solana/errors.md) for a breakdown of error messages Phantom may emit.
+
+When the user accepts the request to connect, the provider will also emit a `connect` event that contains the chainId of the network the user is connected to.
+
+```typescript
+provider.on("connect", (connectionInfo: { chainId: string }) => console.log(`Connected to chain: ${connectionInfo.chainId}`));
+```
+
+Once the web application is connected to Phantom, it will be able to read the connected account's address and prompt the user for additional transactions. It also exposes a convenience `isConnected` boolean.
+
+```javascript
+console.log(provider.selectedAddress);
+// 0x534583cd8cE0ac1af4Ce01Ae4f294d52b4Cd305F 
+console.log(provider.isConnected());
+// true
+```
+
+## Disconnecting
+
+There is no way to programmatically disconnect a user from their connection once they have established one.\
+\
+Once a user has established a connection, Phantom will add the website they opened a connection with to a list of "trusted apps." The user can then revoke access through the UI at any time, and will then need to reconnect. Phantom will attempt to reconnect to any application that is added to the users "trusted apps" automatically.
+
+## Changing Accounts
+
+Phantom allows users to seamlessly manage multiple accounts (i.e. addresses) from within a single extension or mobile app. Whenever a user switches accounts, Phantom will emit an `accountsChanged` event.
+
+If a user changes accounts while already connected to an application, and the new account had already whitelisted that application, then the user will stay connected and Phantom will pass the public key of the new account:
+
+```typescript
+provider.on('accountsChanged', (publicKeys: String[]) => {
+    if (publicKeys) {
+        // Set new public key and continue as usual
+        console.log(`Switched to account ${publicKeys[0]}`);
+    } 
+});
+```
+
+If Phantom does not pass the public key of the new account, an application can either do nothing or attempt to reconnect:
+
+```typescript
+provider.on('accountsChanged', (publicKeys: String[]) => {
+    if (publicKeys) {
+      // Set new public key and continue as usual
+      console.log(`Switched to account ${publicKeys[0].toBase58()}`);
+    } else {
+      // Attempt to reconnect to Phantom
+      provider.request({ method: "eth_requestAccounts" }).catch((error) => {
+        // handle connection failure
+      });
+    }
+});
+```
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/getting-started.md
+================================================
+# Getting Started
+
+The Phantom browser extension and mobile in-app browser are both designed to interact with web applications. \
+\
+To interact with Phantom, you will go through the provider object that Phantom injects into the browser. This provider is globally available at `window.ethereum` and its methods will always include Phantom's most up-to-date functionality. The `ethereum` object can also be accessed from `window.phantom` to prevent namespace collisions. This documentation is dedicated to covering all aspects of the provider.
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/sending-a-transaction.md
+================================================
+# Sending a Transaction
+
+Once a web application is connected to Phantom, it can prompt the user for permission to send transactions on their behalf.
+
+To send a transaction, you will need to have a valid transaction object. It should look a little like this:
+
+```json
+{
+  from: "0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8",
+  to: "0xac03bb73b6a9e108530aff4df5077c2b3d481e5a",
+  gasLimit: "21000",
+  maxFeePerGas: "300",
+  maxPriorityFeePerGas: "10",
+  nonce: "0",
+  value: "10000000000"
+}
+```
+
+However, this transaction object needs to be signed using the sender's private key. This ensures that only the person that holds the private key can send transactions from the public address.
+
+\
+To prompt Phantom to send a transaction to the network, refer to the following code snippet
+
+```javascript
+const result = await provider.request({
+        method: 'eth_sendTransaction',
+        params: [
+          {
+            from: accounts[0],
+            to: '0x0c54FcCd2e384b4BB6f2E405Bf5Cbc15a017AaFb',
+            value: '0x0',
+            gasLimit: '0x5028',
+            gasPrice: '0x2540be400',
+            type: '0x0',
+          },
+        ],
+});
+```
+
+This is the building blocks of what you will need to send a transaction. However, if you were to copy/paste this, it would likely fail. There are several pieces of a transaction that are best provided in a dynamic manner. Take a look at our [sendTransaction function](https://github.com/phantom-labs/eth\_sandbox/blob/main/src/utils/sendTransaction.ts) in our sandbox for reference.
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/signing-a-message.md
+================================================
+# Signing a Message
+
+When a web application is connected to Phantom, it can also request that the user signs a given message. Applications are free to write their own messages which will be displayed to users from within Phantom's signature prompt. Message signatures do not involve network fees and are a convenient way for apps to verify ownership of an address. You can see our[ handleSignMessage implementation](https://github.com/phantom-labs/eth\_sandbox/blob/main/src/App.tsx#L193-L211) to see how you can use libraries such as ethers.js to abstract away some of these intricacies&#x20;
+
+```javascript
+const message = 'To avoid digital dognappers, sign below to authenticate with CryptoCorgis.';
+const from = accounts[0];
+const msg = `0x${Buffer.from(message, 'utf8').toString('hex')}`;
+const sign = await provider.request({
+        method: 'personal_sign',
+        params: [msg, from, 'Example password'],
+    });
+```
+
+## Support for "Sign In With" Standards
+
+Applications that rely on `signMessage` for authenticating users can choose to opt-in to one of the various Sign In With (SIW) standards. If a message follows one of the supported standards, Phantom will verify required fields at the time of signing.&#x20;
+
+At the time of this writing, Phantom supports:
+
+* **Sign In With X** ([CAIP-122](https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-122.md))
+* **Sign In With Ethereum** ([EIP-4361](https://eips.ethereum.org/EIPS/eip-4361))
+* **Sign In With Solana** ([EIP-4361](https://eips.ethereum.org/EIPS/eip-4361) with Solana `address` & `chain-id` grammar)
+
+The serialized format of SIW messages is as follows:
+
+<table><thead><tr><th>Name</th><th>Type</th><th data-type="checkbox">Required?</th><th>Description</th></tr></thead><tbody><tr><td><code>domain</code></td><td><code>string</code></td><td>true</td><td>The authority that is requesting the signing.</td></tr><tr><td><code>address</code></td><td><code>string</code></td><td>true</td><td>The blockchain address that is performing the signing.</td></tr><tr><td><code>statement</code></td><td><code>string</code></td><td>false</td><td>A human-readable ASCII assertion that the user will sign. It <em>MUST NOT</em> contain <code>\n</code>.</td></tr><tr><td><code>uri</code></td><td><code>string</code></td><td>true</td><td>A URI referring to the resource that is the subject of the signing (i.e. the subject of the claim).</td></tr><tr><td><code>version</code></td><td><code>string</code></td><td>true</td><td>The current version of the message.</td></tr><tr><td><code>chain-id</code></td><td><code>string</code></td><td>true</td><td>The Chain ID to which the session is bound, and the network where Contract Accounts MUST be resolved.</td></tr><tr><td><code>nonce</code></td><td><code>string</code></td><td>true</td><td>A randomized token to prevent signature replay attacks.</td></tr><tr><td><code>issued-at</code></td><td><code>string</code></td><td>true</td><td>The issuance time.</td></tr><tr><td><code>expiration-time</code></td><td><code>string</code></td><td>false</td><td>The time at which the signed authentication message is no longer valid.</td></tr><tr><td><code>not-before</code></td><td><code>string</code></td><td>false</td><td>The time at which the signed authentication message starts being valid.</td></tr><tr><td><code>request-id</code></td><td><code>string</code></td><td>false</td><td>A system-specific identifier used to uniquely refer to the authentication request.</td></tr><tr><td><code>resources</code></td><td><code>string[]</code></td><td>false</td><td>A list of uris the user wishes to have resolved as part of the authentication by the relying party.</td></tr></tbody></table>
+
+### Sign In With X
+
+The Sign In With X standard is defined by [CAIP-122](https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-122.md). It uses [CAIP-10](https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-10.md) identifiers for the `address` field and [CAIP-2](https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-2.md) for `chain-id`.
+
+{% hint style="info" %}
+While CAIP-122 is technically chain-agnostic, only Ethereum and Solana parsing are supported at this time.
+{% endhint %}
+
+#### Ethereum Example
+
+{% tabs %}
+{% tab title="signMessage()" %}
+```javascript
+const provider = getProvider(); // see "Detecting the Provider"
+const message = `magiceden.io wants you to sign in with your Ethereum account:
+eip155:1:0xb9c5714089478a327f09197987f16f9e5d936e8a
+
+Click Sign or Approve only means you have proved this wallet is owned by you.
+
+URI: https://magiceden.io
+Version: 1
+Chain ID: eip155:1
+Nonce: bZQJ0SL6gJ
+Issued At: 2022-10-25T16:52:02.748Z
+Resources:
+- https://foo.com
+- https://bar.com`;
+const encodedMessage = new TextEncoder().encode(message);
+const signedMessage = await provider.signMessage(encodedMessage, "utf8");
+```
+{% endtab %}
+
+{% tab title="request()" %}
+```javascript
+const provider = getProvider(); // see "Detecting the Provider"
+const message = `magiceden.io wants you to sign in with your Ethereum account:
+eip155:1:0xb9c5714089478a327f09197987f16f9e5d936e8a
+
+Click Sign or Approve only means you have proved this wallet is owned by you.
+
+URI: https://magiceden.io
+Version: 1
+Chain ID: eip155:1
+Nonce: bZQJ0SL6gJ
+Issued At: 2022-10-25T16:52:02.748Z
+Resources:
+- https://foo.com
+- https://bar.com`;
+const encodedMessage = new TextEncoder().encode(message);
+const signedMessage = await provider.request({
+    method: "signMessage",
+    params: {
+         message: encodedMessage,
+         display: "utf8",
+    
+});
+```
+{% endtab %}
+{% endtabs %}
+
+### Sign In With Ethereum
+
+The Sign In With Ethereum standard is defined by [EIP-4361](https://eips.ethereum.org/EIPS/eip-4361).
+
+#### Example
+
+{% tabs %}
+{% tab title="signMessage()" %}
+```javascript
+const provider = getProvider(); // see "Detecting the Provider"
+const message = `magiceden.io wants you to sign in with your Ethereum account:
+0xb9c5714089478a327f09197987f16f9e5d936e8a
+
+Click Sign or Approve only means you have proved this wallet is owned by you.
+
+URI: https://magiceden.io
+Version: 1
+Chain ID: 1
+Nonce: bZQJ0SL6gJ
+Issued At: 2022-10-25T16:52:02.748Z
+Resources:
+- https://foo.com
+- https://bar.com`;
+const encodedMessage = new TextEncoder().encode(message);
+const signedMessage = await provider.signMessage(encodedMessage, "utf8");
+```
+{% endtab %}
+
+{% tab title="request()" %}
+```javascript
+const provider = getProvider(); // see "Detecting the Provider"
+const message = `magiceden.io wants you to sign in with your Ethereum account:
+0xb9c5714089478a327f09197987f16f9e5d936e8a
+
+Click Sign or Approve only means you have proved this wallet is owned by you.
+
+URI: https://magiceden.io
+Version: 1
+Chain ID: 1
+Nonce: bZQJ0SL6gJ
+Issued At: 2022-10-25T16:52:02.748Z
+Resources:
+- https://foo.com
+- https://bar.com`;
+const encodedMessage = new TextEncoder().encode(message);
+const signedMessage = await provider.request({
+    method: "signMessage",
+    params
+         message: encodedMessage,
+         display: "utf8",
+    
+});
+```
+{% endtab %}
+{% endtabs %}
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/provider-api-reference/README.md
+================================================
+# Provider API Reference
+
+Phantom's provider API is exposed to the user through the `window.ethereum` object that is injected into the browser. This API is how a dapp will make requests to the user; reading account data, connecting to the website, signing messages, and sending transactions will all be done through this provider object.\
+\
+This provider API is specified in greater detail in [EIP-1193](https://eips.ethereum.org/EIPS/eip-1193).\
+\
+This area of the documentation will contain information about the API's properties, events, and methods.
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/provider-api-reference/errors.md
+================================================
+# Error Messages & Codes
+
+When making requests to Phantom in [Establishing a Connection](../establishing-a-connection.md), [Sending a Transaction](../sending-a-transaction.md), or[ Signing a Message](../signing-a-message.md), Phantom may respond with an error. The following is a list of all possible error codes and their meanings. These error messages follow [EIP-1474](https://eips.ethereum.org/EIPS/eip-1474#error-codes) and [EIP-1193](https://eips.ethereum.org/EIPS/eip-1193#provider-errors).\
+
+
+| Code   | Title                            | Description                                                                                                                                                                                                                                                                          |
+| ------ | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 4900   | Disconnected                     | Phantom could not connect to the network.                                                                                                                                                                                                                                            |
+| 4100   | Unauthorized                     | The requested method and/or account has not been authorized by the user.                                                                                                                                                                                                             |
+| 4001   | User Rejected Request            | The user rejected the request through Phantom.                                                                                                                                                                                                                                       |
+| -32000 | Invalid Input                    | Missing or invalid parameters.                                                                                                                                                                                                                                                       |
+| -32002 | Requested resource not available | This error occurs when a dapp attempts to submit a new transaction while Phantom's approval dialog is already open for a previous transaction. Only one approve window can be open at a time. Users should  approve or reject their transaction before initiating a new transaction. |
+| -32003 | Transaction Rejected             | Phantom does not recognize a valid transaction.                                                                                                                                                                                                                                      |
+| -32601 | Method Not Found                 | Phantom does not recognize the method.                                                                                                                                                                                                                                               |
+| -32603 | Internal Error                   | Something went wrong within Phantom.                                                                                                                                                                                                                                                 |
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/provider-api-reference/events/README.md
+================================================
+# Events
+
+Phantom's provider API available at `window.ethereum` implements a Node.js style [`EventEmitter` ](https://nodejs.org/api/events.html)API, that allows you to hook into different events that are emitted upon certain actions that take place in either the dapp, or the wallet. Each page in this section will be an isolated piece of information that informs you of all the technical details you need to know about each event Phantom supports.
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/provider-api-reference/events/accounts-changed.md
+================================================
+# Accounts Changed
+
+Event emitted upon changing accounts within your Phantom wallet.
+
+````typescript
+window.ethereum.on('accountsChanged', (newAccounts: String[]) => {
+      // "newAccounts" will always be an array, but it can be empty.      
+      if (newAccounts) {
+        console.log(`switched to new account: ${newAccounts}`);
+        accounts = newAccounts;
+      } else {
+        /**
+         * In this case dApps could...
+         *
+         * 1. Not do anything
+         * 2. Only re-connect to the new account if it is trusted
+         *
+         * ```
+         * provider.send('eth_requestAccounts', []).catch((err) => {
+         *  // fail silently
+         * });
+         * ```
+         *
+         * 3. Always attempt to reconnect
+         */
+  }
+})
+````
+
+You can see an example of [hooking into this event](https://github.com/phantom-labs/eth\_sandbox/blob/main/src/App.tsx#L114-L152) in our sandbox.
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/provider-api-reference/events/chain-changed.md
+================================================
+# Chain Changed
+
+Event emitted upon the dapp or wallet changing the network/chain you are connected to
+
+Phantom abstracts the concept of networks, and network switching. So there is no action required on your end as a dapp developer.
+
+```typescript
+ethereum.on('chainChanged', (chainId: string) => {
+  console.log(chainId);
+  // "0x1" on Ethereum
+  /* Phantom will handle all of the internal changes needed to handle the new chain.
+   * As the dapp developer, 
+   * you just need to make sure all of your transaction requests
+   * populate the correct chainId
+   */
+});
+```
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/provider-api-reference/events/connect.md
+================================================
+# Connect
+
+Event emitted upon connecting to a dapp.
+
+```typescript
+interface connectionInfo {
+  chainId: string;
+}
+
+window.ethereum.on('connect', (connectionInfo: connectionInfo) => {
+      console.log(connectionInfo.chainId);
+      // "0x1" On Ethereum
+});
+```
+
+You can see an example of [hooking into this event](https://github.com/phantom-labs/eth\_sandbox/blob/main/src/App.tsx#L98-L104) in our sandbox.
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/provider-api-reference/events/disconnect.md
+================================================
+# Disconnect
+
+Event emitted upon the wallet losing connection to the RPC provider.
+
+This is **not** a user "disconnecting" from a dapp, or otherwise revoking access between the dapp and the wallet.
+
+```typescript
+ window.ethereum.on('disconnect', () => {
+      console.log('lost connection to the rpc)
+});
+```
+
+You can see an example of [hooking into this event ](https://github.com/phantom-labs/eth\_sandbox/blob/main/src/App.tsx#L106-L112)in our sandbox.
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/provider-api-reference/methods/README.md
+================================================
+# Methods
+
+In the following pages you will find information about the individual methods that are available to you through Phantom's `window.phantom.ethereum` object. As a dapp developer, you will use these methods to programmatically interact with the wallet. From sending requests to/from the blockchain, to connecting to your website — these methods will help you interact with your users.
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/provider-api-reference/methods/isconnected.md
+================================================
+---
+description: Checks if the wallet is connected to the dapp
+---
+
+# isConnected
+
+Parameters: None
+
+Returns: Boolean
+
+```typescript
+window.phantom.ethereum.isConnected()
+// true if connected
+// false if not
+```
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/provider-api-reference/methods/request.md
+================================================
+---
+description: Sends a JSON RPC request to the wallet
+---
+
+# request
+
+Params: `method: string;` `params?: unknown[] | object;`
+
+Returns: `Promise<unknown>`
+
+`Example:`
+
+```javascript
+const accounts = await window.phantom.ethereum.request({ 
+    method: "eth_requestAccounts", params: [] 
+})
+console.log(accounts)
+// ["0xDAFEA492D9c6733ae3d56b7Ed1ADB60692c98Bc5"]
+```
+
+The code above demonstrates how you can use the `request` method to ask the user to connect to your dapp.\
+\
+The `request` method is the go to way for you to interface with the wallet in your dapp. It accepts most [JSON RPC requests](https://ethereum.org/en/developers/docs/apis/json-rpc/#json-rpc-methods) that would need to interact with the wallet. \
+\
+However it **will not** work for methods that don't make sense for a wallet. E.g. you can't use the provider object Phantom injects to call something like `eth_getTransactionByHash`. If you send a method that the provider object does not support, it will throw an error. You can see a list of errors, and the shape that they will take on [this](../errors.md) page.
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/provider-api-reference/properties/README.md
+================================================
+# Properties
+
+Here you will find a list of all of the properties available to you once the `window.phantom.ethereum` object has been injected.\
+\
+These are all exactly the same as the `window.ethereum` object. However, we recommend using the `window.phantom.ethereum` object to prevent namespace collisions.
+
+```json
+{
+    chainId: HexString
+    networkVersion: String
+    selectedAddress: HexString
+    _events: Object
+    _eventsCount: Number
+}
+```
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/provider-api-reference/properties/_events.md
+================================================
+# \_events
+
+## window.phantom.ethereum.\_events
+
+An object containing all of the events that the provider has emitted or logged.
+
+```javascript
+const events = window.phantom.ethereum._events;
+console.log(events);
+// Events {chainChanged: Array(2), accountsChanged: EE}
+```
+
+This is **not** a recommended way to keep track of different events. The provider implements a Node.js `EventEmitter` API to emit different events happening within the wallet and/or dapp. See [Events](../events/) for more details.
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/provider-api-reference/properties/_eventscount.md
+================================================
+# \_eventsCount
+
+## window.phantom.ethereum.\_eventsCount
+
+An object containing the number of events that have happened
+
+```javascript
+const eventsCount = window.phantom.ethereum._eventsCount;
+console.log(eventsCount);
+// 2
+```
+
+This is **not** a recommended way to keep track of different events. The provider implements a Node.js `EventEmitter` API to emit different events happening within the wallet and/or dapp.&#x20;
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/provider-api-reference/properties/chainid.md
+================================================
+# chainId
+
+## window.phantom.ethereum.chainId
+
+The chainId of the network you are currently connected to, returned as a hexadecimal string.
+
+```javascript
+const chainId = window.phantom.ethereum.chainId;
+console.log(chainId);
+// "0x1"
+// hexidecimal representation of Ethereum Mainnet
+```
+
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/provider-api-reference/properties/isphantom.md
+================================================
+# isPhantom
+
+## window.phantom.ethereum.isPhantom
+
+A boolean that identifies if Phantom is installed.
+
+```javascript
+const isPhantomInstalled = window.phantom?.ethereum?.isPhantom;
+console.log(isPhantomInstalled);
+// true
+```
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/provider-api-reference/properties/networkversion.md
+================================================
+# networkVersion
+
+## window.ethereum.networkVersion
+
+The network number of the blockchain that you are connected to. This property is available for legacy purposes. It is recommended that modern dapps refer to the `chainId` property to determine what chain a user is connected to currently.
+
+```javascript
+const networkVersion = window.phantom.ethereum.networkVersion;
+console.log(networkVersion);
+// "1"
+// Ethereum Mainnet's Network Version
+```
+
+
+
+
+================================================
+FILE: documentation/phantom-wallet/ethereum-polygon/provider-api-reference/properties/selectedaddress.md
+================================================
+# selectedAddress
+
+## window.phantom.ethereum.selectedAddress
+
+The address of the wallet that is currently connected to the dapp. This value will update upon [accountsChanged ](../events/accounts-changed.md)and  [connect](../events/connect.md) events.\
+\
+Returns a hexadecimal string.
+
+```javascript
+const address = window.phantom.ethereum.selectedAddress;
+console.log(address);
+// "0xDAFEA492D9c6733ae3d56b7Ed1ADB60692c98Bc5"
+```
+
+
+
+
+================================================
+FILE: documentation/phantom-wallet/integrating-with-libraries/ethereum-and-polygon/README.md
+================================================
+# Ethereum & Polygon
+
+
+
+
+================================================
+FILE: documentation/phantom-wallet/integrating-with-libraries/ethereum-and-polygon/integrating-with-web3-onboard.md
+================================================
+# Integrating with Web3-Onboard
+
+This tutorial is a step-by-step guide on how to integrate a wallet such as Phantom into your dapp using the [Web3-Onboard](https://onboard.blocknative.com/) library.
+
+We will be going through step by step how to go from 0 to a fully integrated Web3-Onboard button. If you already have a dapp that you are trying to integrate Phantom in, you can use [our project](https://github.com/phantom-labs/Web3-Onboard-Integration.git) as reference.
+
+### Prerequisites
+
+* Node version >=16.12.0
+* A text editor/IDE (such as VSCode)
+* Some Knowledge of React
+
+### Creating The App
+
+We recommend using [Vite](https://vitejs.dev/) to create new react applications.
+
+To create a new React application using Vite, run the following command in your terminal:
+
+```sh
+yarn create vite
+```
+
+1. This will ask you for a project name. Provide it a name here. For purposes of this tutorial I used "Web3-onboard-Sandbox".
+2. It will then ask you to select a framework. Select "React" here.
+3. Next it will ask for a variant. Select "Typescript" here.
+
+Now change directory into your project and run:
+
+```bash
+yarn install
+```
+
+And make sure your app runs by running the command:
+
+```bash
+yarn dev
+```
+
+Before moving forward, we're going to configure Vite to recognize the `window.ethereum` object. Since we are in Typescript if we try to use `window.ethereum` without first doing this step, we will get a type error and be unable to compile our project.
+
+open the `vite-env.d.ts` file in the `src` directory.
+
+It should look like this:
+
+```typescript
+/// <reference types="vite/client" />
+```
+
+All you need to do is extend the `Window` interface. To do so modify the `vite-env.d.ts` file to look like so:
+
+```typescript
+/// <reference types="vite/client" />
+
+interface Window {
+    ethereum: any;
+}
+```
+
+Now whenever we reference `window.ethereum`, we will not encounter any type errors.
+
+With your app running, we can now move onto the Web3-Onboard specific pieces.
+
+### Installing Web3-Onboard
+
+To install the appropriate package, run the following:
+
+```bash
+yarn add @web3-onboard/react @web3-onboard/phantom
+```
+
+Now you can use the web3-onboard package in your project and integrate Phantom as a wallet in the modal.
+
+### Initializing Web3-Onboard
+
+First we will need to import the packages into our project. At the top of the `App.tsx` file add these two lines:
+
+```typescript
+import { init, useConnectWallet } from "@web3-onboard/react";
+import phantomModule from "@web3-onboard/phantom";
+```
+
+Next, we will can initialize the modal by calling the init hook. You can add this code to the project between your imports and your `App` component.
+
+```typescript
+const phantom = phantomModule();
+
+init({
+  wallets: [phantom],
+  chains: [
+    {
+      id: "0x1",
+      token: "ETH",
+      label: "Ethereum Mainnet",
+      rpcUrl:
+        "https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY_HERE",
+    },
+  ]
+});
+```
+
+Here you can see that we call the `init` hook that we imported, and provide the `phantomModule` to an array of `wallets`. Here you can also specify which chains your dapp supports.
+
+Each chain requires an `id`, `token`, `label`, and `rpcUrl`.  Phantom currently supports Polygon, Ethereum Mainnet, Goerli, and Mumbai.
+
+You can add as many chains as you would like. There are many configuration options that Web3-Onboard provides you. To see a full list of the different options you can check out their documentation [here](https://onboard.blocknative.com/docs/modules/core#quick-start). You can customize your theme, i18n options, app metadata, realtime app notifications, and more.
+
+With this bit of configuration out of the way we only need to add the button that will call the modal to the forefront of the screen to connect our wallet.
+
+### Adding A Connect Wallet Button
+
+In your `App` component, you will utilize the `useConnectWallet` hook that you imported earlier.
+
+Add this to the first line inside your component:
+
+```typescript
+  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+```
+
+This gives you the `connect` and `disconnect` functions that we will attach to our button, as well as the `wallet` and `connecting` keys in an object that allow us to track state of various wallets and connection statuses.
+
+We now have everything we need to add the actual UI. You can place this block in place of the basic counter that comes in the Vite starter.
+
+```jsx
+<button disabled={connecting} onClick={() => (wallet ? disconnect(wallet) : connect())}>
+    {connecting ? 'connecting' : wallet ? 'disconnect' : 'connect'}
+</button>
+```
+
+If you save your project you should now have working connect button that displays the Phantom wallet button. Clicking on it will establish a connection to the dapp.
+
+Here's what it will look like:
+
+<img src="../../.gitbook/assets/Screen Shot 2023-03-10 at 1.23.44 PM.png" alt="" data-size="original">![](<../../.gitbook/assets/Screen Shot 2023-03-10 at 1.23.46 PM.png>)
+
+### Conclusion
+
+Web3-Onboard provides quite a lot out of the gate with very little work on your end as a developer. We hope that you enjoyed this guide.
+
+If you got lost along the way do not worry. You can find the source code [here](https://github.com/phantom-labs/Web3-Onboard-Integration.git) to double check your work.
+
+
+
+================================================
+FILE: documentation/phantom-wallet/resources/assets.md
+================================================
+# Logos & Assets
+
+A variety of Phantom logos and assets for your integration can be found here: [https://phantom.app/logos.zip](https://phantom.app/logos.zip)
+
+
+
+================================================
+FILE: documentation/phantom-wallet/resources/community-guides-and-sdks.md
+================================================
+# Community Guides & SDKs
+
+The following resources have been created by the Phantom developer community. These open source initiatives are free to use but are not actively maintained by Phantom.
+
+### Deeplinking
+
+#### iOS
+
+* [PhantomConnect](https://github.com/Tokr-Labs/phantom-connect) by [Tokr Labs](https://www.tokrlabs.xyz/)
+
+#### Unity
+
+* [Solana-Unity Deeplink Example](https://github.com/Woody4618/SolanaUnityDeeplinkExample)&#x20;
+
+#### React Native
+
+* [Phantom Mobile Wallet Adapter](https://github.com/Phantasia-Sports/phantom-mobile-wallet-adapter/tree/main/src) by [Phantasia Sports](https://phantasia.app/)
+
+
+
+================================================
+FILE: documentation/phantom-wallet/resources/faq.md
+================================================
+# FAQ
+
+## Why can't I access Phantom on my website?
+
+Phantom will only [inject its provider](../getting-started-with-solana/detecting-the-provider.md) into websites that begin with `https://`, or if the host is `localhost` or `127.0.0.1`. If your website only uses `http://`, Phantom will not inject its provider and you will not be able to access the methods found at `window.phantom`. Encrypting your web traffic and upgrading to `https://` will restore functionality.
+
+Phantom will also not inject its provider into any [iframe](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe).
+
+## Why isn't my token displaying properly?
+
+Phantom supports the [Token Metadata Standard](https://docs.metaplex.com/programs/token-metadata/overview) established by [Metaplex](https://www.metaplex.com/). When displaying tokens, Phantom will first [categorize](../best-practices/tokens/#categorizing-tokens) them according to their [TokenStandard](https://docs.metaplex.com/programs/token-metadata/token-standard). If a token is considered `Fungible`, Phantom will display it on the [Home tab](../best-practices/tokens/home-tab-fungibles.md). Otherwise, Phantom will display it as a [Collectible](../best-practices/tokens/collectibles-nfts-and-semi-fungibles.md). For more information, please review:
+
+{% content-ref url="../best-practices/tokens/" %}
+[tokens](../best-practices/tokens/)
+{% endcontent-ref %}
+
+## What types of NFTs are supported?
+
+Phantom supports a range of NFT media types including images, audio files, video files, and 3D models. At this time, Phantom does not support HTML files. For a full list of the types of NFTs that Phantom will display, please reference:
+
+{% content-ref url="../best-practices/tokens/supported-media-types.md" %}
+[supported-media-types.md](../best-practices/tokens/supported-media-types.md)
+{% endcontent-ref %}
+
+## Are hardware wallets supported?
+
+Yes, Phantom currently supports [Ledger](https://www.ledger.com/) and requires no special treatment on the application side.
+
+## How does Phantom import wallet addresses?
+
+When importing addresses from an existing seed phrase, Phantom will scan for 20 addresses in each of our three supported derivation paths (`bip44change`, `bip44`, and a deprecated path), for a total of 60 addresses. For the convenience of the user, Phantom will filter this list of addresses down to wallets that have ever had signatures (i.e. have ever been used). Phantom will then sort this filtered list based on how many signatures each wallet has had plus the amount of [lamports](https://docs.solana.com/terminology#lamport) it currently owns. &#x20;
+
+## Why does Phantom prepend an additional instruction on standard SPL token transfers?
+
+When transferring SPL tokens, Phantom will first double check that the owner of the receiving token account is the address you expect to send to. To do this, Phantom calls a custom deployment of the [Serum Assert Owner](https://github.com/project-serum/serum-dex/tree/6138ca98280f6433deecde560f3d23cc4a749bae/assert-owner) program. The program address of this deployment is `DeJBGdMFa1uynnnKiwrVioatTuHmNLpyFKnmB5kaFdzQ` and is available on Solana's Devnet, Testnet, and Mainnet.
+
+
+
+================================================
+FILE: documentation/phantom-wallet/resources/sandbox.md
+================================================
+# Demo Applications
+
+### Multichain Sandbox
+
+For a live example of how a multichain dApp can integrate with Phantom, check out our Multichain Sandbox on [CodeSandbox](https://472igc.csb.app/) and [GitHub](https://github.com/phantom-labs/multi-chain-sandbox).
+
+<figure><img src="../.gitbook/assets/Screen Shot 2023-03-09 at 4.55.22 PM.png" alt=""><figcaption><p>The Phantom Multichain Sandbox</p></figcaption></figure>
+
+### Solana-only Sandbox
+
+For a live example of a Solana-only integration, check out our Solana Sandbox on [CodeSandbox](https://r3byv.csb.app/) and [GitHub](https://github.com/phantom-labs/sandbox).
+
+![The Phantom Sandbox](<../.gitbook/assets/Screen Shot 2022-07-07 at 5.13.23 PM.png>)
+
+### Deeplinking Demo App
+
+For a live demonstration of Phantom's deeplinking API, please review our React Native demo app on [GitHub](https://github.com/phantom-labs/deep-link-demo-app). This application can be run locally and interacted with on iOS and Android devices via [Expo CLI](https://docs.expo.dev/workflow/expo-cli/).&#x20;
+
+![A connect request to Magic Eden, initiated via a deeplink](../.gitbook/assets/cover\_deeplinking\_me-minified.png)
+
+
+
+================================================
+FILE: documentation/phantom-wallet/solana/detecting-the-provider.md
+================================================
+# Detecting the Provider
+
+To detect if a user has already installed Phantom, a web application should check for the existence of a `phantom` object. Phantom's browser extension and mobile in-app browser will both inject a `phantom` object into the [window](https://developer.mozilla.org/en-US/docs/Web/API/Window) of any web application the user visits, provided that site is using `https://`, on `localhost`, or is `127.0.0.1.` Phantom will not inject the provider into [iframes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe) or sites use `http://`.
+
+If a `phantom` object exists, Solana apps can interact with Phantom via the API found at `window.phantom.solana`. This `solana` object is also available at `window.solana` to support legacy integrations.&#x20;
+
+To detect if Phantom is installed, an application should check for an additional `isPhantom` flag.
+
+```typescript
+const isPhantomInstalled = window.phantom?.solana?.isPhantom
+```
+
+If Phantom is not installed, we recommend you redirect your users to [our website](https://phantom.app/). Altogether, this may look like the following.
+
+```typescript
+const getProvider = () => {
+  if ('phantom' in window) {
+    const provider = window.phantom?.solana;
+
+    if (provider?.isPhantom) {
+      return provider;
+    }
+  }
+
+  window.open('https://phantom.app/', '_blank');
+};
+```
+
+For an example of how a React application can detect Phantom, please refer to the [`getProvider` function in our sandbox](https://github.com/phantom-labs/sandbox/blob/b57fdd0e65ce4f01290141a01e33d17fd2f539b9/src/App.tsx#L43).&#x20;
+
+
+
+================================================
+FILE: documentation/phantom-wallet/solana/errors.md
+================================================
+# Error Messages and Codes
+
+When making requests to Phantom in [Establishing a Connection](establishing-a-connection.md), [Sending a Transaction](sending-a-transaction.md), or [Signing a Message](signing-a-message.md), Phantom may respond with an error. The following is a list of all possible error codes and their meanings. These error messages are inspired by Ethereum's [EIP-1474](https://eips.ethereum.org/EIPS/eip-1474#error-codes) and [EIP-1193](https://eips.ethereum.org/EIPS/eip-1193#provider-errors).
+
+| Code   | Title                            | Description                                                                                                                                                                                                                                                                          |
+| ------ | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 4900   | Disconnected                     | Phantom could not connect to the network.                                                                                                                                                                                                                                            |
+| 4100   | Unauthorized                     | The requested method and/or account has not been authorized by the user.                                                                                                                                                                                                             |
+| 4001   | User Rejected Request            | The user rejected the request through Phantom.                                                                                                                                                                                                                                       |
+| -32000 | Invalid Input                    | Missing or invalid parameters.                                                                                                                                                                                                                                                       |
+| -32002 | Requested resource not available | This error occurs when a dapp attempts to submit a new transaction while Phantom's approval dialog is already open for a previous transaction. Only one approve window can be open at a time. Users should  approve or reject their transaction before initiating a new transaction. |
+| -32003 | Transaction Rejected             | Phantom does not recognize a valid transaction.                                                                                                                                                                                                                                      |
+| -32601 | Method Not Found                 | Phantom does not recognize the method.                                                                                                                                                                                                                                               |
+| -32603 | Internal Error                   | Something went wrong within Phantom.                                                                                                                                                                                                                                                 |
+
+Typically, these errors will be easily parseable and have both a code and an explanation. For example:
+
+```javascript
+try {
+  await window.solana.signMessage();
+} catch (err) {
+  //  {code: 4100, message: 'The requested method and/or account has not been authorized by the user.'}
+}
+```
+
+
+
+================================================
+FILE: documentation/phantom-wallet/solana/establishing-a-connection.md
+================================================
+# Establishing a Connection
+
+Once an application has [detected the provider](detecting-the-provider.md), it can then request to connect to Phantom. This connection request will prompt the user for permission to share their public key, indicating that they are willing to interact further. Users must approve a connection request before the app can make additional requests such as [signing a message](signing-a-message.md) or [sending a transaction](sending-a-transaction.md).
+
+Once permission is established for the first time, the web application's domain will be whitelisted for future connection requests. After a connection is established, it is possible to terminate the connection from both the application and the user side.
+
+## Connecting
+
+The **recommended** and **easiest** way to connect to Phantom is by calling `window.phantom.solana.connect()`. However, the provider also exposes a `request` JSON RPC interface.
+
+{% tabs %}
+{% tab title="connect()" %}
+```javascript
+const provider = getProvider(); // see "Detecting the Provider"
+try {
+    const resp = await provider.connect();
+    console.log(resp.publicKey.toString());
+    // 26qv4GCcx98RihuK3c4T6ozB3J7L6VwCuFVc7Ta2A3Uo 
+} catch (err) {
+    // { code: 4001, message: 'User rejected the request.' }
+}
+```
+{% endtab %}
+
+{% tab title="request()" %}
+```javascript
+const provider = getProvider(); // see "Detecting the Provider"
+try {
+    const resp = await provider.request({ method: "connect" });
+    console.log(resp.publicKey.toString());
+    // 26qv4GCcx98RihuK3c4T6ozB3J7L6VwCuFVc7Ta2A3Uo 
+} catch (err) {
+    // { code: 4001, message: 'User rejected the request.' }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+The `connect()` call will return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/Promise) that resolves when the user accepts the connection request, and reject (throw when awaited) when the user declines the request or closes the pop-up. See [Errors](errors.md) for a breakdown of error messages Phantom may emit.
+
+When the user accepts the request to connect, the provider will also emit a `connect` event.
+
+```javascript
+provider.on("connect", () => console.log("connected!"));
+```
+
+Once the web application is connected to Phantom, it will be able to read the connected account's public key and prompt the user for additional transactions. It also exposes a convenience `isConnected` boolean.
+
+```javascript
+console.log(provider.publicKey.toString());
+// 26qv4GCcx98RihuK3c4T6ozB3J7L6VwCuFVc7Ta2A3Uo 
+console.log(provider.isConnected);
+// true
+```
+
+### Eagerly Connecting
+
+After a web application connects to Phantom for the first time, it becomes trusted. Once trusted, it's possible for the application to automatically connect to Phantom on subsequent visits or page refreshes, without prompting the user for permission. This is referred to as "eagerly connecting".
+
+To implement this, applications should pass an `onlyIfTrusted` option into the `connect()` call.
+
+{% tabs %}
+{% tab title="connect()" %}
+```javascript
+provider.connect({ onlyIfTrusted: true });
+```
+{% endtab %}
+
+{% tab title="request()" %}
+```javascript
+window.solana.request({ method: "connect", params: { onlyIfTrusted: true }});
+```
+{% endtab %}
+{% endtabs %}
+
+If this flag is present, Phantom will only eagerly connect and emit a `connect` event if the application is trusted. If the application is not trusted, Phantom will throw a [`4001` error](errors.md) and remain disconnected until the user is prompted to connect without an `onlyIfTrusted` flag. In either case, Phantom will not open a pop-up window, making this convenient to use on all page loads.
+
+The following is an example of how a React application can eagerly connect to Phantom.
+
+```javascript
+import { useEffect } from "react";
+
+useEffect(() => {
+    // Will either automatically connect to Phantom, or do nothing.
+    provider.connect({ onlyIfTrusted: true })
+        .then(({ publicKey }) => {
+            // Handle successful eager connection
+        })
+        .catch(() => {
+            // Handle connection failure as usual
+        })
+}, []);
+```
+
+For a live demo, please refer to the [`handleConnect` portion of our sandbox](https://github.com/phantom-labs/sandbox/blob/b57fdd0e65ce4f01290141a01e33d17fd2f539b9/src/App.tsx#L263).
+
+If a wallet disconnects from a trusted app and then attempts to reconnect at a later time, Phantom will still eagerly connect. Once an app is trusted, Phantom will only require the user to approve a connection request if the user revokes the app from within their Trusted Apps settings.
+
+## Disconnecting
+
+Disconnecting mirrors the same process as connecting. However, it is also possible for the wallet to initiate the disconnection, rather than the application itself.
+
+{% tabs %}
+{% tab title="disconnect()" %}
+```javascript
+provider.disconnect();
+```
+{% endtab %}
+
+{% tab title="request()" %}
+```javascript
+provider.request({ method: "disconnect" });
+```
+{% endtab %}
+{% endtabs %}
+
+The following is an example of how a React application can [gracefully handle](https://github.com/phantom-labs/sandbox/blob/b57fdd0e65ce4f01290141a01e33d17fd2f539b9/src/App.tsx#L107) a `disconnect` event.
+
+```javascript
+import { useState, useEffect } from "react";
+
+const [pubKey, setPubKey] = useState(null);
+
+useEffect(() => {
+  // Store user's public key once they connect
+  provider.on("connect", (publicKey) => {
+    setPubKey(publicKey);
+  });
+
+  // Forget user's public key once they disconnect
+  provider.on("disconnect", () => {
+    setPubKey(null);
+  });
+}, [provider]);
+```
+
+## Changing Accounts
+
+Phantom allows users to seamlessly manage multiple accounts (i.e. [Keypairs](https://solana-labs.github.io/solana-web3.js/classes/Keypair.html)) from within a single extension or mobile app. Whenever a user switches accounts, Phantom will emit an `accountChanged` event.
+
+If a user changes accounts while already connected to an application, and the new account had already whitelisted that application, then the user will stay connected and Phantom will pass the [PublicKey](https://solana-labs.github.io/solana-web3.js/classes/PublicKey.html) of the new account:
+
+```javascript
+provider.on('accountChanged', (publicKey) => {
+    if (publicKey) {
+        // Set new public key and continue as usual
+        console.log(`Switched to account ${publicKey.toBase58()}`);
+    } 
+});
+```
+
+If Phantom does not pass the public key of the new account, an application can either do nothing or attempt to reconnect:
+
+```javascript
+provider.on('accountChanged', (publicKey) => {
+    if (publicKey) {
+      // Set new public key and continue as usual
+      console.log(`Switched to account ${publicKey.toBase58()}`);
+    } else {
+      // Attempt to reconnect to Phantom
+      provider.connect().catch((error) => {
+        // Handle connection failure
+      });
+    }
+});
+```
+
+
+
+================================================
+FILE: documentation/phantom-wallet/solana/integrating-phantom.md
+================================================
+---
+description: Start developing with Phantom Extension & In-app Browser
+---
+
+# Getting Started With Solana
+
+The Phantom browser extension and mobile in-app browser are both designed to interact with web applications. For mobile apps, we recommend integrating via [universal links or deeplinks](../phantom-deeplinks/deeplinks-ios-and-android.md).
+
+There are two main ways to integrate Phantom into your web application:
+
+### Direct Integration
+
+The most direct way to interact with Phantom is via the provider that Phantom injects into your web application. This provider is globally available at `window.phantom` and its methods will always include Phantom's most up-to-date functionality. This documentation is dedicated to covering all aspects of the provider.
+
+### Solana Wallet Adapter
+
+Another quick and easy way to get up and running with Phantom is via the [Solana Wallet Adapter](https://github.com/solana-labs/wallet-adapter/) package. The wallet adapter is a set of modular TypeScript components that allow developers to easily integrate multiple Solana wallets into their applications. This package includes starter files, setup and usage instructions, and a live demo showcasing multiple UI frameworks.
+
+
+
+================================================
+FILE: documentation/phantom-wallet/solana/sending-a-transaction-1.md
+================================================
+# Sending a Versioned Transaction
+
+On October 10, 2022, Solana introduced the concept of [Versioned Transactions](https://edge.docs.solana.com/developing/versioned-transactions). Currently, the Solana runtime supports two types of transactions: `legacy` (see [Sending a Legacy Transaction](sending-a-transaction.md)) and `v0` (transactions that can include [Address Lookup Tables (LUTS)](https://edge.docs.solana.com/developing/versioned-transactions)).
+
+The goal of `v0` is to increase the maximum size of a transaction, and hence the number of accounts that can fit in a single atomic transaction. With LUTs, developers can now build transactions with a maximum of 256 accounts, as compared to the limit of 35 accounts in legacy transactions that do not utilize LUTs.
+
+{% hint style="info" %}
+For a dive deep on Versioned Transactions, LUTs, and how the above changes affect the anatomy of a transaction, you can read [this detailed guide](https://anvit.hashnode.dev/versioned-transactions).
+{% endhint %}
+
+On this page, we'll go over the following:
+
+1. Building a Versioned Transaction
+2. Signing and Sending a Versioned Transaction
+3. Building an Address Lookup Table (LUT)
+4. Extending an Address Lookup Table (LUT)
+5. Signing and Sending a Versioned Transaction utilising a LUT
+
+## Building a Versioned Transaction
+
+Versioned transactions are built in a very similar fashion to [legacy transactions](sending-a-transaction.md). The only difference is that developers should use the `VersionedTransaction` class rather than the `Transaction` class.
+
+The following example show how to build a simple transfer instruction. Once the transfer instruction is made, a `MessageV0` formatted transaction message is constructed with the transfer instruction. Finally, a new `VersionedTransaction` is created, parsing in the `v0` compatible message.
+
+{% tabs %}
+{% tab title="createTransactionV0()" %}
+```typescript
+// create array of instructions
+const instructions = [
+  SystemProgram.transfer({
+    fromPubkey: publicKey,
+    toPubkey: publicKey,
+    lamports: 10,
+  }),
+];
+
+// create v0 compatible message
+const messageV0 = new TransactionMessage({
+  payerKey: publicKey,
+  recentBlockhash: blockhash,
+  instructions,
+}).compileToV0Message();
+
+// make a versioned transaction
+const transactionV0 = new VersionedTransaction(messageV0);
+```
+{% endtab %}
+{% endtabs %}
+
+Check out the [`createTransferTransactionV0()`](https://github.com/phantom-labs/sandbox/blob/main/src/utils/createTransferTransactionV0.ts) function in our code sandbox for a live example of creating a versioned transaction.
+
+## Signing and Sending a Versioned Transaction
+
+Once a Versioned transaction is created, it can be signed and sent via Phantom using the `signAndSendTransaction` method on the provider. The call will return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/Promise) for an object containing the `signature`. This is the same way a legacy transaction is sent via the Phantom provider.
+
+{% tabs %}
+{% tab title="signAndSendTransaction()" %}
+```javascript
+const provider = getProvider(); // see "Detecting the Provider"
+const network = "<NETWORK_URL>";
+const connection = new Connection(network);
+const versionedTransaction = new VersionedTransaction();
+const { signature } = await provider.signAndSendTransaction(versionedTransaction);
+await connection.getSignatureStatus(signature);
+```
+{% endtab %}
+{% endtabs %}
+
+You can also specify a `SendOptions` [object](https://solana-labs.github.io/solana-web3.js/modules.html#SendOptions) as a second argument into `signAndSendTransaction()` or as an `options` parameter when using `request`.
+
+For a live demo of signing and sending a Versioned transaction, please refer to the [`handleSignAndSendTransactionV0()`](https://github.com/phantom-labs/sandbox/blob/78dc35fe140140a961345a6af30a058e1e19a7aa/src/App.tsx#L191) section of our developer sandbox.
+
+## Building an Address Lookup Table (LUT)
+
+Address Lookup Tables (LUTs) can be used to load accounts into table-like data structures. These structures can then be referenced to significantly increase the number of accounts that can be loaded in a single transaction.&#x20;
+
+This lookup method effectively "_compresses_" a 32-byte address into a 1-byte index value. This "_compression_" enables storing up to 256 address in a single lookup table for use inside any given transaction.
+
+With the `@solana/web3.js` [`createLookupTable`](https://solana-labs.github.io/solana-web3.js/classes/AddressLookupTableProgram.html#createLookupTable) function, developers can construct the instruction needed to create a new lookup table, as well as determine its address. Once we have the lookup table instruction, we can construct a transaction, sign it, and send it to create a lookup table on-chain. Address lookup tables can be created with either a `v0` transaction or a `legacy` transaction. However, the Solana runtime can only retrieve and handle the additional addresses within a lookup table while using `v0` transactions.
+
+Here's a code snippet that creates a Lookup Table.
+
+{% tabs %}
+{% tab title="createAddressLookupTable()" %}
+<pre class="language-typescript"><code class="lang-typescript">// create an Address Lookup Table
+<strong>const [lookupTableInst, lookupTableAddress] = AddressLookupTableProgram.createLookupTable({
+</strong>  authority: publicKey,
+  payer: publicKey,
+  recentSlot: slot,
+});
+
+// To create the Address Lookup Table on chain:
+// send the `lookupTableInst` instruction in a transaction
+const lookupMessage = new TransactionMessage({
+  payerKey: publicKey,
+  recentBlockhash: blockhash,
+  instructions: [lookupTableInst],
+}).compileToV0Message();
+
+const lookupTransaction = new VersionedTransaction(lookupMessage);
+const lookupSignature = await signAndSendTransaction(provider, lookupTransaction);</code></pre>
+{% endtab %}
+{% endtabs %}
+
+Please refer to the [`handleSignAndSendTransactionV0WithLookupTable()`](https://github.com/phantom-labs/sandbox/blob/78dc35fe140140a961345a6af30a058e1e19a7aa/src/App.tsx#L218) in our code sandbox for a live demo of creating a lookup table.
+
+## Extending an Address Lookup Table (LUT)
+
+Once an Address Lookup Table is created, it can then be extended (i.e. accounts can be appended to the table). Using the `@solana/web3.js` library, you can create a new `extend` instruction using the [`extendLookupTable`](https://solana-labs.github.io/solana-web3.js/classes/AddressLookupTableProgram.html#extendLookupTable) method. Once the extend instruction is created, it can be sent in a transaction.
+
+{% tabs %}
+{% tab title="extendAddressLookupTable()" %}
+```typescript
+// add addresses to the `lookupTableAddress` table via an `extend` instruction
+const extendInstruction = AddressLookupTableProgram.extendLookupTable({
+  payer: publicKey,
+  authority: publicKey,
+  lookupTable: lookupTableAddress,
+  addresses: [
+    publicKey,
+    SystemProgram.programId,
+    // more `publicKey` addresses can be listed here
+  ],
+});
+
+// Send this `extendInstruction` in a transaction to the cluster
+// to insert the listing of `addresses` into your lookup table with address `lookupTableAddress`
+const extensionMessageV0 = new TransactionMessage({
+  payerKey: publicKey,
+  recentBlockhash: blockhash,
+  instructions: [extendInstruction],
+}).compileToV0Message();
+
+const extensionTransactionV0 = new VersionedTransaction(extensionMessageV0);
+const extensionSignature = await signAndSendTransaction(provider, extensionTransactionV0);
+```
+{% endtab %}
+{% endtabs %}
+
+Please refer to the [`handleSignAndSendTransactionV0WithLookupTable()`](https://github.com/phantom-labs/sandbox/blob/78dc35fe140140a961345a6af30a058e1e19a7aa/src/App.tsx#L218) in our code sandbox for a live demo of extending a lookup table.
+
+## Signing and Sending a Versioned Transaction utilizing a LUT
+
+Up until now, we have:
+
+1. Learned how to create a `VersionedTransaction`
+2. Created an Address Lookup Table
+3. Extended the Address Lookup Table
+
+At this point, we are now ready to sign and send a `VersionedTransaction` utilizing an Address Lookup Table.
+
+First, we need to fetch the account of the created Address Lookup Table.
+
+{% tabs %}
+{% tab title="getAddressLookupTable()" %}
+```typescript
+// get the table from the cluster
+const lookupTableAccount = await connection.getAddressLookupTable(lookupTableAddress).then((res) => res.value);
+// `lookupTableAccount` will now be a `AddressLookupTableAccount` object
+console.log('Table address from cluster:', lookupTableAccount.key.toBase58());
+```
+{% endtab %}
+{% endtabs %}
+
+We can also parse and read all the addresses currently stores in the fetched Address Lookup Table.
+
+{% tabs %}
+{% tab title="Parse and Read addresses" %}
+```typescript
+// Loop through and parse all the address stored in the table
+for (let i = 0; i < lookupTableAccount.state.addresses.length; i++) {
+  const address = lookupTableAccount.state.addresses[i];
+  console.log(i, address.toBase58());
+}
+```
+{% endtab %}
+{% endtabs %}
+
+We can now create the instructions array with an arbitrary transfer instruction, just the way we did while creating the `VersionedTransaction` earlier. This `VersionedTransaction` can then be sent using the `signAndSendTransaction()` provider function.
+
+{% tabs %}
+{% tab title="" %}
+```typescript
+// create an array with your desired `instructions`
+// in this case, just a transfer instruction
+const instructions = [
+  SystemProgram.transfer({
+    fromPubkey: publicKey,
+    toPubkey: publicKey,
+    lamports: minRent,
+  }),
+];
+
+// create v0 compatible message
+const messageV0 = new TransactionMessage({
+  payerKey: publicKey,
+  recentBlockhash: blockhash,
+  instructions,
+}).compileToV0Message([lookupTableAccount]);
+
+// make a versioned transaction
+const transactionV0 = new VersionedTransaction(messageV0);
+const signature = await signAndSendTransaction(provider, transactionV0);
+```
+{% endtab %}
+{% endtabs %}
+
+Please refer to the [`handleSignAndSendTransactionV0WithLookupTable()`](https://github.com/phantom-labs/sandbox/blob/78dc35fe140140a961345a6af30a058e1e19a7aa/src/App.tsx#L218) in our code sandbox for a live demo of signing and sending a versioned transaction utilizing an Address Lookup Table.
+
+
+
+================================================
+FILE: documentation/phantom-wallet/solana/sending-a-transaction.md
+================================================
+# Sending a Transaction
+
+Once a web application is connected to Phantom, it can prompt the user for permission to send transactions on their behalf.
+
+In order to send a transaction, a web application must:
+
+1. Create an unsigned transaction.
+2. Have the transaction be signed and submitted to the network by the user's Phantom wallet.
+3. Optionally await network confirmation using a Solana JSON RPC connection.
+
+{% hint style="info" %}
+For more information about the nature of Solana transactions, please review the [`solana-web3.js` docs](https://solana-labs.github.io/solana-web3.js/) as well as the [Solana Cookbook](https://solanacookbook.com/core-concepts/transactions.html#transactions).
+{% endhint %}
+
+For a sample Phantom transaction, check out our [developer sandbox](https://github.com/phantom-labs/sandbox/blob/b57fdd0e65ce4f01290141a01e33d17fd2f539b9/src/App.tsx#L160).
+
+## Signing and Sending a Transaction
+
+Once a transaction is created, the web application may ask the user's Phantom wallet to sign and send the transaction. If accepted, Phantom will sign the transaction with the user's private key and submit it via a Solana JSON RPC connection. By far the **easiest** and most **recommended** way of doing this is by using the `signAndSendTransaction` method on the provider, but it is also possible to do with `request`. In both cases, the call will return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/Promise) for an object containing the `signature`.
+
+{% tabs %}
+{% tab title="signAndSendTransaction()" %}
+```javascript
+const provider = getProvider(); // see "Detecting the Provider"
+const network = "<NETWORK_URL>";
+const connection = new Connection(network);
+const transaction = new Transaction();
+const { signature } = await provider.signAndSendTransaction(transaction);
+await connection.getSignatureStatus(signature);
+```
+{% endtab %}
+
+{% tab title="request()" %}
+```javascript
+const provider = getProvider(); // see "Detecting the Provider"
+const network = "<NETWORK_URL>";
+const connection = new Connection(network);
+const transaction = new Transaction();
+const { signature } = await provider.request({
+    method: "signAndSendTransaction",
+    params: {
+         message: bs58.encode(transaction.serializeMessage()),
+    },
+});
+await connection.getSignatureStatus(signature);
+```
+{% endtab %}
+{% endtabs %}
+
+You can also specify a `SendOptions` [object](https://solana-labs.github.io/solana-web3.js/modules.html#SendOptions) as a second argument into `signAndSendTransaction` or as an `options` parameter when using `request`.
+
+For a live demo of `signAndSendTransaction`, please refer to the [`handleSignAndSendTransaction` section of our developer sandbox](https://github.com/phantom-labs/sandbox/blob/b57fdd0e65ce4f01290141a01e33d17fd2f539b9/src/App.tsx#L160).
+
+## Other Signing Methods
+
+The following methods are also supported, but are not recommended over `signAndSendTransaction`. It is safer for users, and a simpler API for developers, for Phantom to submit the transaction immediately after signing it instead of relying on the application to do so. If you use the methods below, Phantom will display a warning message to users.
+
+### Signing a Transaction (Without Sending)
+
+Once a transaction is created, a web application may ask the user's Phantom wallet to sign the transaction _without_ also submitting it to the network. The easiest and most recommended way of doing this is via the `signTransaction` method on the provider, but it is also possible to do via `request`. In both cases, the call will return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/Promise) for the signed transaction. After the transaction has been signed, an application may submit the transaction itself via [web3js's `sendRawTransaction`](https://solana-labs.github.io/solana-web3.js/classes/Connection.html#sendRawTransaction).
+
+{% tabs %}
+{% tab title="signTransaction()" %}
+```javascript
+const provider = getProvider();
+const network = "<NETWORK_URL>";
+const connection = new Connection(network);
+const transaction = new Transaction();
+const signedTransaction = await provider.signTransaction(transaction);
+const signature = await connection.sendRawTransaction(signedTransaction.serialize());
+```
+{% endtab %}
+
+{% tab title="request()" %}
+```javascript
+const provider = getProvider();
+const network = "<NETWORK_URL>";
+const connection = new Connection(network);
+const transaction = new Transaction();
+const signedTransaction = await provider.request({
+    method: "signTransaction",
+    params: {
+         message: bs58.encode(transaction.serializeMessage()),
+    },
+});
+const signature = await connection.sendRawTransaction(signedTransaction.serialize());
+```
+{% endtab %}
+{% endtabs %}
+
+Please refer to the [`handleSignTransaction` section of our developer sandbox](https://github.com/phantom-labs/sandbox/blob/b57fdd0e65ce4f01290141a01e33d17fd2f539b9/src/App.tsx#L187) for an example of `signTransaction`.
+
+### Signing Multiple Transactions
+
+It is also possible to sign and send multiple transactions at once. This is exposed through the `signAllTransactions` method on the provider.
+
+{% tabs %}
+{% tab title="signAllTransactions()" %}
+```javascript
+const signedTransactions = await provider.signAllTransactions(transactions);
+```
+{% endtab %}
+
+{% tab title="request()" %}
+```javascript
+const message = transactions.map(transaction => {
+    return bs58.encode(transaction.serializeMessage());
+});
+const signedTransactions = await provider.request({
+    method: "signAllTransactions",
+    params: { message },
+});
+```
+{% endtab %}
+{% endtabs %}
+
+For an example of `signAllTransactions`, please refer to the [`handleSignAllTransactions` section of our developer sandbox](https://github.com/phantom-labs/sandbox/blob/b57fdd0e65ce4f01290141a01e33d17fd2f539b9/src/App.tsx#L213).
+
+
+
+================================================
+FILE: documentation/phantom-wallet/solana/signing-a-message.md
+================================================
+# Signing a Message
+
+When a web application is connected to Phantom, it can also request that the user signs a given message. Applications are free to write their own messages which will be displayed to users from within Phantom's signature prompt. Message signatures do not involve network fees and are a convenient way for apps to verify ownership of an address.
+
+In order to send a message for the user to sign, a web application must:&#x20;
+
+1. Provide a **hex** or **UTF-8** encoded string as a Uint8Array.
+2. Request that the encoded message is signed via the user's Phantom wallet.
+
+The [`handleSignMessage` section of our developer sandbox](https://github.com/phantom-labs/sandbox/blob/b57fdd0e65ce4f01290141a01e33d17fd2f539b9/src/App.tsx#L242) provides an example of signing a message.
+
+{% hint style="info" %}
+For more information on how to verify the signature of a message, please refer to [tweetnacl-js](https://github.com/dchest/tweetnacl-js/blob/master/README.md#naclsigndetachedverifymessage-signature-publickey).
+{% endhint %}
+
+{% tabs %}
+{% tab title="signMessage()" %}
+```javascript
+const provider = getProvider(); // see "Detecting the Provider"
+const message = `To avoid digital dognappers, sign below to authenticate with CryptoCorgis`;
+const encodedMessage = new TextEncoder().encode(message);
+const signedMessage = await provider.signMessage(encodedMessage, "utf8");
+```
+{% endtab %}
+
+{% tab title="request()" %}
+<pre class="language-javascript"><code class="lang-javascript">const provider = getProvider(); // see "Detecting the Provider"
+const message = `To avoid digital dognappers, sign below to authenticate with CryptoCorgis`;
+const encodedMessage = new TextEncoder().encode(message);
+<strong>const signedMessage = await provider.request({
+</strong>    method: "signMessage",
+    params: {
+         message: encodedMessage,
+         display: "hex",
+    },
+});
+</code></pre>
+{% endtab %}
+{% endtabs %}
+
+## Support for "Sign In With" Standards
+
+Applications that rely on `signMessage` for authenticating users can choose to opt-in to one of the various Sign In With (SIW) standards. You can read more about them [here](../development-powertools/signing-a-message.md).
+
+

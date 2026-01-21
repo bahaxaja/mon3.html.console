@@ -1,0 +1,139 @@
+{
+  "pools": [
+    {
+      "address": "Gt4WgxeqRLgT3dyArXKg9pcv75XbjNFQnS7NJcqFhgFd",
+      "tickSpacing": 32896,
+      "currentPrice": "100150075.000000",
+      "currentTick": 184231,
+      "tokenA": {
+        "mint": "So11111111111111111111111111111111111111112",
+        "decimals": 9
+      },
+      "tokenB": {
+        "mint": "tjZR9DUXxkVuqYhBmffCVL7WXvRoRjh9BLSwzwXVpkm",
+        "decimals": 9
+      },
+      "liquidity": "20003019318398",
+      "feeRate": "1.00%",
+      "feeRateRaw": 10000,
+      "sqrtPrice": "184605808598509449904128",
+      "tokenMintA": "So11111111111111111111111111111111111111112",
+      "tokenMintB": "tjZR9DUXxkVuqYhBmffCVL7WXvRoRjh9BLSwzwXVpkm",
+      "tokenVaultA": "GKGKuEA84mRu7JC2BHh2CC3iW9HtKaTKNE5JDbipBqB5",
+      "tokenVaultB": "Bumx5evWt14mNSzompm6s7LUQ9YT2LY7iuYNY23ao5B1",
+      "whirlpoolsConfig": "FcrweFY1G9HJAHG5inkGB6pKg1HZ6x9UC2WioAfWrGkR",
+      "whirlpoolBump": {
+        "0": 255
+      },
+      "feeGrowthGlobalA": null,
+      "feeGrowthGlobalB": null,
+      "protocolFeeOwedA": null,
+      "protocolFeeOwedB": null,
+      "rewardLastUpdatedTimestamp": "1731569446",
+      "rewardInfos": [
+        {
+          "mint": "11111111111111111111111111111111",
+          "vault": "11111111111111111111111111111111",
+          "authority": null,
+          "emissionsPerSecondX64": null,
+          "growthGlobalX64": null
+        },
+        {
+          "mint": "11111111111111111111111111111111",
+          "vault": "11111111111111111111111111111111",
+          "authority": null,
+          "emissionsPerSecondX64": null,
+          "growthGlobalX64": null
+        },
+        {
+          "mint": "11111111111111111111111111111111",
+          "vault": "11111111111111111111111111111111",
+          "authority": null,
+          "emissionsPerSecondX64": null,
+          "growthGlobalX64": null
+        }
+      ],
+      "updatedAt": "2026-01-14T22:47:38.778Z"
+    }
+  ],
+  "bundles": [
+    {
+      "positionBundleMint": "GPy6jyb782Zthkyv84ANeWFsqrVH8nPaaf5YkoFwfXoi",
+      "positionBundleMintSecretKey": [
+        150,
+        226,
+        97,
+        226,
+        59,
+        161,
+        5,
+        27,
+        99,
+        119,
+        110,
+        131,
+        97,
+        87,
+        57,
+        76,
+        3,
+        31,
+        236,
+        162,
+        196,
+        135,
+        47,
+        144,
+        79,
+        198,
+        24,
+        4,
+        251,
+        231,
+        106,
+        19,
+        228,
+        193,
+        131,
+        85,
+        7,
+        50,
+        159,
+        224,
+        94,
+        223,
+        22,
+        123,
+        37,
+        246,
+        120,
+        12,
+        72,
+        186,
+        180,
+        152,
+        201,
+        107,
+        215,
+        55,
+        101,
+        33,
+        19,
+        80,
+        16,
+        149,
+        32,
+        221
+      ],
+      "positionBundlePda": "FRDVrKub8b12NvtoEznXi46Chv9cZqenWqTzxuaQ57ve",
+      "positionBundlePdaBump": 255,
+      "ataAddress": "WShHe6HXjgPSoJD2mahGBiWinFyRZ7DkEtxo1bpRi87",
+      "ataBump": 252,
+      "metadataPda": "AttJuhkPgZGQXqHdT8VHXB5LziZGEcVFVQkHS6zxNYP9",
+      "owner": "5d1A5EgDpqALgzS4wgwFcfeEjZ6FTAqxeggXywBww7K",
+      "whirlpool": "Gt4WgxeqRLgT3dyArXKg9pcv75XbjNFQnS7NJcqFhgFd",
+      "createdAt": "2026-01-14T22:47:57.406Z",
+      "txSignature": "2BP46ZXhuaPGeJpLx8FJJ3m8VgRYnUzuBcBBmqAshDNTt8sQt5whZcyjjwNR6LWDW65VvFZcKKuxytXXsULLTyZA"
+    }
+  ]
+}
