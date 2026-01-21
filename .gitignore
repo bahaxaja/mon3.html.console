@@ -42,3 +42,9 @@ next-env.d.ts
 
 #BUNDLES
 /public/keypairs
+
+# Environment variables - NEVER commit secrets
+.env
+.env.local
+.env.*.local
+
