@@ -4,21 +4,29 @@
 import { useEffect, useState, useRef } from "react";
 
 export const CHANNEL = "ORCHIDS_HOVER_v1" as const;
-const VISUAL_EDIT_MODE_KEY = "orchids_visual_edit_mode" as const;
-const FOCUSED_ELEMENT_KEY = "orchids_focused_element" as const;
+// SECURITY FIX Plan 4: Removed localStorage keys - XSS attack surface
+// const VISUAL_EDIT_MODE_KEY = "orchids_visual_edit_mode" as const;
+// const FOCUSED_ELEMENT_KEY = "orchids_focused_element" as const;
 
 // Deduplicate helper for high-frequency traffic (HIT / FOCUS_MOVED / SCROLL)
-// -----------------------------------------------------------------------------
-let _orchidsLastMsg = "";
+// SECURITY FIX: Removed postMessage - this feature is disabled for security
+// Previous: window.parent.postMessage(data, "*");
+// Reason: Wildcard origin postMessage can leak sensitive UI state to malicious iframes
+// Plan 3: Remove insecure postMessage completely
+// const postMessageDedup = (data: any) => {
+//   try {
+//     const key = JSON.stringify(data);
+//     if (key === _orchidsLastMsg) return; // identical – drop
+//     _orchidsLastMsg = key;
+//   } catch {
+//     // if stringify fails, fall through
+//   }
+//   window.parent.postMessage(data, "*"); // REMOVED - SECURITY ISSUE
+// };
+
+// Stub function to prevent errors
 const postMessageDedup = (data: any) => {
-  try {
-    const key = JSON.stringify(data);
-    if (key === _orchidsLastMsg) return; // identical – drop
-    _orchidsLastMsg = key;
-  } catch {
-    // if stringify fails, fall through
-  }
-  window.parent.postMessage(data, "*");
+  // Feature disabled for security reasons (Plan 3)
 };
 
 export type ParentToChild =
@@ -403,14 +411,7 @@ export default function HoverReceiver() {
   const [hoverBoxes, setHoverBoxes] = useState<Box[]>([]);
   const [focusBox, setFocusBox] = useState<Box>(null);
   const [focusedElementId, setFocusedElementId] = useState<string | null>(null);
-  const [isVisualEditMode, setIsVisualEditMode] = useState(() => {
-    // Initialize from localStorage if available
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem(VISUAL_EDIT_MODE_KEY);
-      return stored === "true";
-    }
-    return false;
-  });
+  const [isVisualEditMode, setIsVisualEditMode] = useState(false); // SECURITY: Removed localStorage persistence (Plan 4)
   const [isResizing, setIsResizing] = useState(false);
   const [resizeHandle, setResizeHandle] = useState<string | null>(null);
   const [resizeStart, setResizeStart] = useState<{
@@ -451,39 +452,19 @@ export default function HoverReceiver() {
   // Timeout refs for clearing persistent font map
   const persistentFontTimeouts = useRef<Map<string, number>>(new Map());
 
-  // Keep ref in sync with state and persist to localStorage
+  // Keep ref in sync with state
   useEffect(() => {
     isVisualEditModeRef.current = isVisualEditMode;
-    // Persist to localStorage
-    if (typeof window !== "undefined") {
-      localStorage.setItem(VISUAL_EDIT_MODE_KEY, String(isVisualEditMode));
+    // SECURITY: Removed localStorage persistence (Plan 4 - XSS attack surface)
     }
   }, [isVisualEditMode]);
 
-  // On mount, notify parent if visual edit mode was restored from localStorage
+  // SECURITY: Removed localStorage restoration (Plan 4)
+  // Feature disabled for security: localStorage data cannot be trusted due to XSS vulnerabilities
   useEffect(() => {
-    if (isVisualEditMode) {
-      // Send acknowledgement to parent that visual edit mode is active
-      // This will sync the parent's state with our restored state
-      window.parent.postMessage(
-        { type: CHANNEL, msg: "VISUAL_EDIT_MODE_ACK", active: true },
-        "*"
-      );
-
-      // Also send a special message to indicate this was restored from localStorage
-      window.parent.postMessage(
-        { type: CHANNEL, msg: "VISUAL_EDIT_MODE_RESTORED", active: true },
-        "*"
-      );
-
-      // Restore focused element after a short delay to ensure DOM is ready
-      setTimeout(() => {
-        if (typeof window !== "undefined") {
-          // Restore focused element
-          const focusedData = localStorage.getItem(FOCUSED_ELEMENT_KEY);
-          if (focusedData) {
-            try {
-              const { id } = JSON.parse(focusedData);
+    // Storage restoration disabled
+    return;
+  }, []);
               const element = document.querySelector(
                 `[data-orchids-id="${id}"]`
               ) as HTMLElement;
@@ -1053,19 +1034,7 @@ export default function HoverReceiver() {
         setHoverBox(null);
       }
 
-      // Send resize message to parent
-      if (focusedElementId) {
-        window.parent.postMessage(
-          {
-            type: CHANNEL,
-            msg: "RESIZE_ELEMENT",
-            elementId: focusedElementId,
-            width: Math.round(newWidth),
-            height: Math.round(newHeight),
-          },
-          "*"
-        );
-      }
+      // SECURITY: postMessage removed (Plan 3 - wildcard origin vulnerability)
     };
 
     const handleMouseUp = () => {
@@ -1166,7 +1135,7 @@ export default function HoverReceiver() {
           }
         }
 
-        window.parent.postMessage(msg, "*");
+        // SECURITY: postMessage removed (Plan 3 - wildcard origin vulnerability)
       }
 
       setIsResizing(false);
@@ -1533,17 +1502,7 @@ export default function HoverReceiver() {
         setFocusedElementId(hitId);
         setFocusTag(tagName);
 
-        // Save focused element info to localStorage
-        if (hitId && typeof window !== "undefined") {
-          const focusedElementData = {
-            id: hitId,
-            tag: tagName,
-          };
-          localStorage.setItem(
-            FOCUSED_ELEMENT_KEY,
-            JSON.stringify(focusedElementData)
-          );
-        }
+        // SECURITY: Removed localStorage (Plan 4)
 
         // Find ALL other elements with the same orchids ID and show hover boxes
         const allMatchingElements = document.querySelectorAll(
@@ -1754,12 +1713,8 @@ export default function HoverReceiver() {
           setHoverBoxes([]);
           setHoverTag(null);
 
-          // Clear focused element from localStorage
-          if (typeof window !== "undefined") {
-            localStorage.removeItem(FOCUSED_ELEMENT_KEY);
-          }
-
-          // Notify parent that focus was cleared
+          // SECURITY: Removed localStorage (Plan 4)
+          // Notify parent focus was cleared
           const msg: ChildToParent = {
             type: CHANNEL,
             msg: "ELEMENT_CLICKED",
@@ -1827,17 +1782,7 @@ export default function HoverReceiver() {
         const newMode = e.data.active;
         setIsVisualEditMode(newMode);
 
-        // Clear localStorage if visual edit mode is being turned off
-        if (!newMode && typeof window !== "undefined") {
-          localStorage.removeItem(VISUAL_EDIT_MODE_KEY);
-          localStorage.removeItem(FOCUSED_ELEMENT_KEY);
-        }
-
-        // Send acknowledgement back to parent so it knows we received the mode change
-        window.parent.postMessage(
-          { type: CHANNEL, msg: "VISUAL_EDIT_MODE_ACK", active: newMode },
-          "*"
-        );
+        // SECURITY: Removed localStorage (Plan 4)
 
         if (!newMode) {
           // already handled, flush too
