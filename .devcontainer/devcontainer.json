@@ -1,7 +1,4 @@
 {
   "image": "mcr.microsoft.com/devcontainers/Debian:bookworm",
-  "features": {},
-  "additionalProperties": {
-    "postStartCommand": "curl --proto '=https' --tlsv1.2 -sSfL https://solana-install.solana.workers.dev | bash && rustc --version && solana --version && anchor --version && surfpool --version && node --version && yarn --version"
-  }
+  "features": {}
 }
